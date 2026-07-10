@@ -106,6 +106,18 @@
             <div v-else class="variations-section">
               <p class="price-display">Precio base bajo cotización</p>
             </div>
+
+            <button
+              type="button"
+              class="add-to-cart-btn"
+              @click="handleAddToCart(product)"
+            >
+              Añadir al carrito
+            </button>
+
+            <p v-if="addedProductIds.has(product.id)" class="added-feedback" role="status">
+              Refacción añadida al carrito.
+            </p>
           </div>
         </div>
       </div>
@@ -117,6 +129,8 @@
 import { ref, computed, onMounted } from 'vue';
 import { graphQLClient } from '../api/client';
 import { gql } from 'graphql-request';
+import { useCartStore, parseProductPrice } from '../stores/cart';
+import type { CartItem } from '../stores/cart';
 import type {
   CatalogQueryResponse,
   FilterOption,
@@ -134,6 +148,9 @@ interface SkuDisplayEntry {
 const products = ref<WCProduct[]>([]);
 const loading = ref<boolean>(true);
 const error = ref<string | null>(null);
+
+const cartStore = useCartStore();
+const addedProductIds = ref<Set<string>>(new Set());
 
 const searchQuery = ref<string>('');
 const selectedCategory = ref<string>('');
@@ -367,6 +384,46 @@ const handleVariationChange = (productId: string, event: Event): void => {
 const clearFilters = (): void => {
   searchQuery.value = '';
   selectedCategory.value = '';
+};
+
+const buildCartItem = (product: WCProduct): CartItem => {
+  const selectedVariation = getSelectedVariation(product);
+  const selectedImage = getSelectedImage(product);
+
+  if (selectedVariation) {
+    return {
+      id: selectedVariation.databaseId,
+      name: product.name,
+      price: parseProductPrice(selectedVariation.price),
+      sku: selectedVariation.sku ?? '',
+      quantity: 1,
+      variantLabel: formatVariationLabel(product.name, selectedVariation.name),
+      imageUrl: selectedImage?.sourceUrl ?? '',
+    };
+  }
+
+  return {
+    id: product.databaseId,
+    name: product.name,
+    price: 0,
+    sku: product.sku ?? '',
+    quantity: 1,
+    variantLabel: '',
+    imageUrl: selectedImage?.sourceUrl ?? '',
+  };
+};
+
+const handleAddToCart = (product: WCProduct): void => {
+  const cartItem = buildCartItem(product);
+  cartStore.addItem(cartItem);
+
+  addedProductIds.value = new Set(addedProductIds.value).add(product.id);
+
+  window.setTimeout(() => {
+    const nextIds = new Set(addedProductIds.value);
+    nextIds.delete(product.id);
+    addedProductIds.value = nextIds;
+  }, 2500);
 };
 
 onMounted(async () => {
@@ -615,6 +672,32 @@ h3 {
 .price-display span {
   color: #0073aa;
   font-size: 1.25rem;
+}
+
+.add-to-cart-btn {
+  width: 100%;
+  margin-top: 1rem;
+  padding: 0.7rem 1rem;
+  border: none;
+  border-radius: 6px;
+  background: #0073aa;
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.add-to-cart-btn:hover {
+  background: #005f8d;
+}
+
+.added-feedback {
+  margin: 0.5rem 0 0;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #047857;
+  text-align: center;
 }
 
 .loading-state,
