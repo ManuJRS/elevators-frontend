@@ -6,6 +6,7 @@
         <RouterLink to="/" class="nav-item">Inicio</RouterLink>
         <RouterLink to="/catalogo" class="nav-item">Catálogo de Refacciones</RouterLink>
         <RouterLink to="/cotizador" class="nav-item">Cotizador</RouterLink>
+        <CartPanel />
       </nav>
     </header>
 
@@ -16,7 +17,11 @@
 </template>
 
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterLink, RouterView } from 'vue-router';
+import CartPanel from './components/CartPanel.vue';
+import { useCheckoutReturnSync } from './composables/useCheckoutReturnSync';
+
+useCheckoutReturnSync();
 </script>
 
 <style>
