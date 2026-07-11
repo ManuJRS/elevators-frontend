@@ -492,7 +492,7 @@ onMounted(async () => {
 
 .filters-bar {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr;
+  grid-template-columns: 2fr 1fr;
   gap: 1rem;
   margin-bottom: 1rem;
   padding: 1.25rem;
