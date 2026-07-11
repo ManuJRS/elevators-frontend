@@ -126,10 +126,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import { graphQLClient } from '../api/client';
 import { gql } from 'graphql-request';
-import { useCartStore, parseProductPrice } from '../stores/cart';
+import {
+  isPurchaseSuccessQuery,
+  PURCHASE_SUCCESS_QUERY_PARAM,
+  useCartStore,
+  parseProductPrice,
+} from '../stores/cart';
 import type { CartItem } from '../stores/cart';
 import type {
   CatalogQueryResponse,
@@ -150,6 +156,8 @@ const loading = ref<boolean>(true);
 const error = ref<string | null>(null);
 
 const cartStore = useCartStore();
+const route = useRoute();
+const router = useRouter();
 const addedProductIds = ref<Set<string>>(new Set());
 
 const searchQuery = ref<string>('');
@@ -426,7 +434,26 @@ const handleAddToCart = (product: WCProduct): void => {
   }, 2500);
 };
 
+const handlePurchaseSuccessReturn = (): void => {
+  if (!isPurchaseSuccessQuery(route.query)) {
+    return;
+  }
+
+  cartStore.clearCart();
+
+  router.replace({ path: '/catalogo' });
+};
+
+watch(
+  () => route.query[PURCHASE_SUCCESS_QUERY_PARAM],
+  () => {
+    handlePurchaseSuccessReturn();
+  },
+);
+
 onMounted(async () => {
+  handlePurchaseSuccessReturn();
+
   try {
     loading.value = true;
     const data = await graphQLClient.request<CatalogQueryResponse>(GET_PRODUCTS_QUERY);
