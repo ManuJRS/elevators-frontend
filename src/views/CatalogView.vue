@@ -107,13 +107,22 @@
               <p class="price-display">Precio base bajo cotización</p>
             </div>
 
-            <button
-              type="button"
-              class="add-to-cart-btn"
-              @click="handleAddToCart(product)"
-            >
-              Añadir al carrito
-            </button>
+            <div class="card-actions">
+              <RouterLink
+                :to="`/producto/${product.slug}`"
+                class="view-detail-btn"
+              >
+                Ver ficha técnica
+              </RouterLink>
+
+              <button
+                type="button"
+                class="add-to-cart-btn"
+                @click="handleAddToCart(product)"
+              >
+                Añadir al carrito
+              </button>
+            </div>
 
             <p v-if="addedProductIds.has(product.id)" class="added-feedback" role="status">
               Refacción añadida al carrito.
@@ -127,7 +136,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, watch } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { useRoute, useRouter, RouterLink } from 'vue-router';
 import { graphQLClient } from '../api/client';
 import { gql } from 'graphql-request';
 import {
@@ -172,6 +181,7 @@ const GET_PRODUCTS_QUERY = gql`
         id
         databaseId
         name
+        slug
         sku
         shortDescription
         image {
@@ -701,9 +711,36 @@ h3 {
   font-size: 1.25rem;
 }
 
+.card-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.view-detail-btn {
+  display: block;
+  width: 100%;
+  padding: 0.7rem 1rem;
+  border: 1px solid #0073aa;
+  border-radius: 6px;
+  background: #fff;
+  color: #0073aa;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.view-detail-btn:hover {
+  background: #f0f8fc;
+  color: #005f8d;
+}
+
 .add-to-cart-btn {
   width: 100%;
-  margin-top: 1rem;
   padding: 0.7rem 1rem;
   border: none;
   border-radius: 6px;
