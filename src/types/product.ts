@@ -41,6 +41,7 @@ export interface WCProduct {
   id: string;
   databaseId: number;
   name: string;
+  slug: string;
   sku: string | null;
   shortDescription: string;
   image: ProductImage | null;

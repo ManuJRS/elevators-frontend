@@ -41,7 +41,8 @@ export interface CartItem {
 }
 
 export const parseProductPrice = (price: string): number => {
-  const parsed = Number.parseFloat(price);
+  const normalized = price.replace(/[^0-9.,-]/g, '').replace(/,/g, '');
+  const parsed = Number.parseFloat(normalized);
   return Number.isFinite(parsed) ? parsed : 0;
 };
 
