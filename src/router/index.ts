@@ -17,6 +17,11 @@ const router = createRouter({
       component: CatalogView,
     },
     {
+      path: '/producto/:slug',
+      name: 'product-detail',
+      component: () => import('../views/ProductDetailView.vue'),
+    },
+    {
       path: '/cotizador',
       name: 'quote',
       component: () => import('../views/QuoteView.vue'),
