@@ -1,39 +1,37 @@
 import { onMounted, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { CHECKOUT_RETURN_QUERY_PARAM, useCartStore } from '../stores/cart';
+import {
+  isPurchaseSuccessQuery,
+  PURCHASE_SUCCESS_QUERY_PARAM,
+  useCartStore,
+} from '../stores/cart';
 
-const isCheckoutReturn = (value: unknown): value is string =>
-  value === 'true' || (Array.isArray(value) && value[0] === 'true');
-
+/**
+ * Sincroniza el vaciado del carrito cuando WooCommerce redirige al catálogo
+ * con ?purchase_success=true. La lógica principal vive en CatalogView.vue.
+ */
 export const useCheckoutReturnSync = (): void => {
   const route = useRoute();
   const router = useRouter();
   const cartStore = useCartStore();
 
-  const syncCheckoutReturn = (): void => {
-    if (!isCheckoutReturn(route.query[CHECKOUT_RETURN_QUERY_PARAM])) {
+  const clearCartOnPurchaseSuccess = (): void => {
+    if (route.path !== '/catalogo' || !isPurchaseSuccessQuery(route.query)) {
       return;
     }
 
-    cartStore.restoreFromCheckoutReturn();
-
-    const nextQuery = { ...route.query };
-    delete nextQuery[CHECKOUT_RETURN_QUERY_PARAM];
-
-    router.replace({
-      path: route.path,
-      query: nextQuery,
-    });
+    cartStore.clearCart();
+    router.replace({ path: '/catalogo' });
   };
 
   onMounted(() => {
-    syncCheckoutReturn();
+    clearCartOnPurchaseSuccess();
   });
 
   watch(
-    () => route.query[CHECKOUT_RETURN_QUERY_PARAM],
+    () => route.query[PURCHASE_SUCCESS_QUERY_PARAM],
     () => {
-      syncCheckoutReturn();
+      clearCartOnPurchaseSuccess();
     },
   );
 };
