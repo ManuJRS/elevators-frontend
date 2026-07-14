@@ -1,10 +1,10 @@
 <template>
-  <header class="sticky top-0 z-40 border-b border-slate-800 bg-[#1e1e24] text-white shadow-lg shadow-black/20">
+  <header class="sticky top-0 z-50 border-b border-slate-800 bg-[#1e1e24] text-white shadow-lg shadow-black/20">
     <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 md:px-6">
       <RouterLink
         to="/"
         class="shrink-0 text-base font-bold tracking-wide text-white transition hover:text-sky-300 md:text-lg"
-        @click="closeMobileMenu"
+        @click="closeAllMenus"
       >
         Elevadores Configurator
       </RouterLink>
@@ -46,30 +46,119 @@
         </button>
       </div>
 
-      <nav class="hidden items-center gap-5 lg:flex" aria-label="Navegación principal">
-        <RouterLink
-          v-for="link in navLinks"
-          :key="link.to"
-          :to="link.to"
-          class="nav-link"
-        >
-          {{ link.label }}
-        </RouterLink>
+      <nav class="hidden items-center gap-1 lg:flex" aria-label="Navegación principal">
+        <template v-if="isLoading">
+          <span class="px-2 text-sm text-slate-500">Cargando menú…</span>
+        </template>
 
-        <CartPanel />
+        <template v-else>
+          <template v-for="item in menuItems" :key="item.id">
+            <div
+              v-if="item.children.length > 0"
+              class="relative"
+              @mouseenter="openDesktopDropdown(item.id)"
+              @mouseleave="scheduleCloseDesktopDropdown(item.id)"
+            >
+              <button
+                type="button"
+                class="nav-link inline-flex items-center gap-1.5 px-2 py-1"
+                :class="{ 'text-white': openDesktopId === item.id }"
+                :aria-expanded="openDesktopId === item.id"
+                :aria-controls="`desktop-dropdown-${item.id}`"
+                @click="toggleDesktopDropdown(item.id)"
+              >
+                {{ item.label }}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  class="h-3.5 w-3.5 transition-transform duration-200"
+                  :class="{ 'rotate-180': openDesktopId === item.id }"
+                  aria-hidden="true"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              </button>
 
-        <div class="ml-1 flex items-center gap-2 border-l border-slate-700 pl-4">
-          <template v-if="!authStore.isAuthenticated">
+              <Transition
+                enter-active-class="transition duration-150 ease-out"
+                enter-from-class="opacity-0 -translate-y-1 scale-95"
+                enter-to-class="opacity-100 translate-y-0 scale-100"
+                leave-active-class="transition duration-100 ease-in"
+                leave-from-class="opacity-100 translate-y-0 scale-100"
+                leave-to-class="opacity-0 -translate-y-1 scale-95"
+              >
+                <div
+                  v-if="openDesktopId === item.id"
+                  :id="`desktop-dropdown-${item.id}`"
+                  class="absolute left-0 top-full z-[60] mt-1 min-w-[14rem] rounded-lg border border-slate-700 bg-[#25252d] py-1.5 shadow-xl shadow-black/40"
+                  role="menu"
+                  @mouseenter="openDesktopDropdown(item.id)"
+                  @mouseleave="scheduleCloseDesktopDropdown(item.id)"
+                >
+                  <component
+                    :is="child.internalTo ? RouterLink : 'a'"
+                    v-for="child in item.children"
+                    :key="child.id"
+                    v-bind="
+                      child.internalTo
+                        ? { to: child.internalTo }
+                        : {
+                            href: child.externalHref ?? '#',
+                            target: isExternalAbsolute(child.externalHref) ? '_blank' : undefined,
+                            rel: isExternalAbsolute(child.externalHref)
+                              ? 'noopener noreferrer'
+                              : undefined,
+                          }
+                    "
+                    class="block px-3.5 py-2 text-sm text-slate-300 transition hover:bg-slate-800/80 hover:text-white"
+                    role="menuitem"
+                  >
+                    {{ child.label }}
+                  </component>
+                </div>
+              </Transition>
+            </div>
+
+            <component
+              :is="item.internalTo ? RouterLink : 'a'"
+              v-else
+              v-bind="
+                item.internalTo
+                  ? { to: item.internalTo }
+                  : {
+                      href: item.externalHref ?? '#',
+                      target: isExternalAbsolute(item.externalHref) ? '_blank' : undefined,
+                      rel: isExternalAbsolute(item.externalHref) ? 'noopener noreferrer' : undefined,
+                    }
+              "
+              class="nav-link px-2 py-1"
+            >
+              {{ item.label }}
+            </component>
+          </template>
+        </template>
+
+        <div class="ml-3 flex items-center gap-2 border-l border-slate-700 pl-4">
+          <CartPanel />
+
+          <template v-if="!authStore.token">
             <RouterLink to="/register" class="btn-ghost">Registrarse</RouterLink>
             <RouterLink to="/login" class="btn-primary">Iniciar sesión</RouterLink>
           </template>
 
           <template v-else>
-            <RouterLink to="/mi-cuenta" class="btn-secondary">Mi cuenta</RouterLink>
-            <span class="hidden max-w-[10rem] truncate text-sm text-slate-300 xl:inline" :title="userLabel">
-              <span class="text-sky-500" aria-hidden="true">◉</span>
-              {{ userLabel }}
-            </span>
+            <RouterLink
+              to="/mi-cuenta"
+              class="btn-secondary max-w-[14rem] truncate"
+              :title="greetingLabel"
+            >
+              {{ greetingLabel }}
+            </RouterLink>
             <button type="button" class="btn-ghost" @click="handleLogout">Cerrar sesión</button>
           </template>
         </div>
@@ -83,30 +172,103 @@
       aria-label="Navegación móvil"
     >
       <div class="mx-auto flex max-w-7xl flex-col gap-1">
-        <RouterLink
-          v-for="link in navLinks"
-          :key="`mobile-${link.to}`"
-          :to="link.to"
-          class="mobile-nav-link"
-          @click="closeMobileMenu"
-        >
-          {{ link.label }}
-        </RouterLink>
+        <p v-if="isLoading" class="px-3 py-2 text-sm text-slate-500">Cargando menú…</p>
 
-        <div class="mt-3 border-t border-slate-800 pt-3">
-          <template v-if="!authStore.isAuthenticated">
-            <RouterLink to="/register" class="mobile-nav-link" @click="closeMobileMenu">
+        <template v-else>
+          <template v-for="item in menuItems" :key="`mobile-${item.id}`">
+            <div v-if="item.children.length > 0" class="rounded-lg">
+              <button
+                type="button"
+                class="mobile-nav-link flex w-full items-center justify-between"
+                :aria-expanded="openMobileAccordionId === item.id"
+                @click="toggleMobileAccordion(item.id)"
+              >
+                <span>{{ item.label }}</span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  class="h-4 w-4 transition-transform duration-200"
+                  :class="{ 'rotate-180': openMobileAccordionId === item.id }"
+                  aria-hidden="true"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              </button>
+
+              <Transition
+                enter-active-class="transition duration-150 ease-out"
+                enter-from-class="opacity-0 -translate-y-1"
+                enter-to-class="opacity-100 translate-y-0"
+                leave-active-class="transition duration-100 ease-in"
+                leave-from-class="opacity-100 translate-y-0"
+                leave-to-class="opacity-0 -translate-y-1"
+              >
+                <div
+                  v-if="openMobileAccordionId === item.id"
+                  class="mb-1 ml-2 space-y-0.5 border-l border-slate-700 pl-2"
+                >
+                  <component
+                    :is="child.internalTo ? RouterLink : 'a'"
+                    v-for="child in item.children"
+                    :key="`mobile-child-${child.id}`"
+                    v-bind="
+                      child.internalTo
+                        ? { to: child.internalTo }
+                        : {
+                            href: child.externalHref ?? '#',
+                            target: isExternalAbsolute(child.externalHref) ? '_blank' : undefined,
+                            rel: isExternalAbsolute(child.externalHref)
+                              ? 'noopener noreferrer'
+                              : undefined,
+                          }
+                    "
+                    class="mobile-nav-link"
+                    @click="closeAllMenus"
+                  >
+                    {{ child.label }}
+                  </component>
+                </div>
+              </Transition>
+            </div>
+
+            <component
+              :is="item.internalTo ? RouterLink : 'a'"
+              v-else
+              v-bind="
+                item.internalTo
+                  ? { to: item.internalTo }
+                  : {
+                      href: item.externalHref ?? '#',
+                      target: isExternalAbsolute(item.externalHref) ? '_blank' : undefined,
+                      rel: isExternalAbsolute(item.externalHref) ? 'noopener noreferrer' : undefined,
+                    }
+              "
+              class="mobile-nav-link"
+              @click="closeAllMenus"
+            >
+              {{ item.label }}
+            </component>
+          </template>
+        </template>
+
+        <div class="mt-3 space-y-0.5 border-t border-slate-800 pt-3">
+          <template v-if="!authStore.token">
+            <RouterLink to="/register" class="mobile-nav-link" @click="closeAllMenus">
               Registrarse
             </RouterLink>
-            <RouterLink to="/login" class="mobile-nav-link" @click="closeMobileMenu">
+            <RouterLink to="/login" class="mobile-nav-link" @click="closeAllMenus">
               Iniciar sesión
             </RouterLink>
           </template>
 
           <template v-else>
-            <p class="mb-2 truncate px-3 text-sm text-slate-400">{{ userLabel }}</p>
-            <RouterLink to="/mi-cuenta" class="mobile-nav-link" @click="closeMobileMenu">
-              Mi cuenta
+            <RouterLink to="/mi-cuenta" class="mobile-nav-link" @click="closeAllMenus">
+              {{ greetingLabel }}
             </RouterLink>
             <button type="button" class="mobile-nav-link w-full text-left" @click="handleLogout">
               Cerrar sesión
@@ -119,42 +281,86 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import { computed, onBeforeUnmount, ref, watch } from 'vue';
 import { RouterLink, useRoute, useRouter } from 'vue-router';
 import CartPanel from '../CartPanel.vue';
+import { usePrimaryMenu } from '../../composables/usePrimaryMenu';
 import { useAuthStore } from '../../stores/auth';
-
-interface NavLink {
-  to: string;
-  label: string;
-}
-
-const navLinks: NavLink[] = [
-  { to: '/', label: 'Inicio' },
-  { to: '/catalogo', label: 'Catálogo de Refacciones' },
-  { to: '/cotizador', label: 'Cotizador' },
-];
 
 const authStore = useAuthStore();
 const router = useRouter();
 const route = useRoute();
 
-const isMobileMenuOpen = ref<boolean>(false);
+const { menuItems, isLoading } = usePrimaryMenu();
 
-const userLabel = computed<string>(
+const isMobileMenuOpen = ref<boolean>(false);
+const openDesktopId = ref<string | null>(null);
+const openMobileAccordionId = ref<string | null>(null);
+
+let dropdownCloseTimer: ReturnType<typeof setTimeout> | null = null;
+
+const userName = computed<string>(
   () => authStore.displayName || authStore.userEmail || 'Usuario',
 );
 
-const toggleMobileMenu = (): void => {
-  isMobileMenuOpen.value = !isMobileMenuOpen.value;
+const greetingLabel = computed<string>(() => `¡Hola, ${userName.value}!`);
+
+const isExternalAbsolute = (href: string | null | undefined): boolean => {
+  if (!href) return false;
+  try {
+    const parsed = new URL(href, window.location.origin);
+    return parsed.origin !== window.location.origin;
+  } catch {
+    return false;
+  }
 };
 
-const closeMobileMenu = (): void => {
+const clearDropdownTimer = (): void => {
+  if (dropdownCloseTimer !== null) {
+    clearTimeout(dropdownCloseTimer);
+    dropdownCloseTimer = null;
+  }
+};
+
+const openDesktopDropdown = (id: string): void => {
+  clearDropdownTimer();
+  openDesktopId.value = id;
+};
+
+const scheduleCloseDesktopDropdown = (id: string): void => {
+  clearDropdownTimer();
+  dropdownCloseTimer = setTimeout(() => {
+    if (openDesktopId.value === id) {
+      openDesktopId.value = null;
+    }
+  }, 120);
+};
+
+const toggleDesktopDropdown = (id: string): void => {
+  clearDropdownTimer();
+  openDesktopId.value = openDesktopId.value === id ? null : id;
+};
+
+const toggleMobileMenu = (): void => {
+  isMobileMenuOpen.value = !isMobileMenuOpen.value;
+  if (!isMobileMenuOpen.value) {
+    openMobileAccordionId.value = null;
+  }
+};
+
+const toggleMobileAccordion = (id: string): void => {
+  openMobileAccordionId.value = openMobileAccordionId.value === id ? null : id;
+};
+
+const closeAllMenus = (): void => {
+  clearDropdownTimer();
   isMobileMenuOpen.value = false;
+  openDesktopId.value = null;
+  openMobileAccordionId.value = null;
 };
 
 const handleLogout = async (): Promise<void> => {
-  closeMobileMenu();
+  closeAllMenus();
   authStore.logout();
   await router.push('/login');
 };
@@ -162,9 +368,13 @@ const handleLogout = async (): Promise<void> => {
 watch(
   () => route.fullPath,
   () => {
-    closeMobileMenu();
+    closeAllMenus();
   },
 );
+
+onBeforeUnmount(() => {
+  clearDropdownTimer();
+});
 </script>
 
 <style scoped>
@@ -189,7 +399,9 @@ watch(
   font-weight: 500;
   color: #d1d5db;
   text-decoration: none;
-  transition: background-color 0.15s ease, color 0.15s ease;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
 }
 
 .mobile-nav-link:hover,
@@ -206,7 +418,10 @@ watch(
   font-size: 0.85rem;
   font-weight: 600;
   text-decoration: none;
-  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
 }
 
 .btn-primary {
