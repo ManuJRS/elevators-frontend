@@ -4,6 +4,10 @@ export interface WpMenuItemNode {
   url: string | null;
   path: string | null;
   parentId: string | null;
+  /** URL del SVG personalizado ACF (puede ser `null`). */
+  footerSvg: string | null;
+  /** Si es `true`, el subelemento se renderiza como mapa embebido (`iframe`). */
+  isMap: boolean;
 }
 
 export interface MenuItemsQueryResponse {
@@ -29,17 +33,21 @@ export interface MenuItem {
   url: string | null;
   path: string | null;
   parentId: string | null;
+  footerSvg: string | null;
+  isMap: boolean;
   /** Ruta interna de la SPA (`RouterLink`) o `null` si es enlace externo / `#`. */
   internalTo: string | null;
   /** Href para etiquetas `<a>` (externos o `#`). */
   externalHref: string | null;
+  /** Src final para `<iframe>` cuando `isMap` es `true`. */
+  mapEmbedSrc: string | null;
 }
 
 export interface NavMenuItem extends MenuItem {
   children: NavMenuItem[];
 }
 
-/** Columna del footer: raíz = título, hijos = enlaces. */
+/** Columna del footer: raíz = título, hijos = enlaces / mapas. */
 export interface FooterColumn {
   id: string;
   title: string;
