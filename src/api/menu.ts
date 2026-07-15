@@ -2,15 +2,18 @@ import { gql } from 'graphql-request';
 import type { Router } from 'vue-router';
 import { graphQLClient } from './client';
 import type {
+  FooterColumn,
+  MenuItem,
   MenuItemsQueryResponse,
+  MenuLocation,
   MenusBySlugQueryResponse,
   NavMenuItem,
   WpMenuItemNode,
 } from '../types/menu';
 
-const GET_PRIMARY_MENU_ITEMS = gql`
-  query GetPrimaryMenuItems {
-    menuItems(where: { location: PRIMARY }, first: 100) {
+const GET_MENU_ITEMS_BY_LOCATION = gql`
+  query GetMenuItemsByLocation($location: MenuLocationEnum!) {
+    menuItems(where: { location: $location }, first: 100) {
       nodes {
         id
         label
@@ -42,11 +45,15 @@ const GET_MENU_BY_SLUG = gql`
 
 const MAIN_NAV_SLUG = 'main-nav';
 
+const isHashOrEmpty = (raw: string | null | undefined): boolean => {
+  const trimmed = raw?.trim() ?? '';
+  return trimmed === '' || trimmed === '#';
+};
+
 const normalizePath = (raw: string | null | undefined): string | null => {
-  if (!raw) return null;
+  if (!raw || isHashOrEmpty(raw)) return null;
 
   const trimmed = raw.trim();
-  if (!trimmed) return null;
 
   try {
     if (/^https?:\/\//i.test(trimmed)) {
@@ -74,10 +81,17 @@ const isSpaPath = (path: string, router: Router): boolean => {
   }
 };
 
-const resolveLinkTargets = (
-  item: WpMenuItemNode,
+export const resolveLinkTargets = (
+  item: Pick<WpMenuItemNode, 'url' | 'path'>,
   router: Router,
-): Pick<NavMenuItem, 'internalTo' | 'externalHref'> => {
+): Pick<MenuItem, 'internalTo' | 'externalHref'> => {
+  if (isHashOrEmpty(item.path) && isHashOrEmpty(item.url)) {
+    return {
+      internalTo: null,
+      externalHref: '#',
+    };
+  }
+
   const fromPath = normalizePath(item.path);
   const fromUrl = normalizePath(item.url);
   const candidate = fromPath ?? fromUrl;
@@ -89,28 +103,40 @@ const resolveLinkTargets = (
     };
   }
 
-  const href = item.url?.trim() || fromPath || '#';
+  const href = !isHashOrEmpty(item.url)
+    ? item.url!.trim()
+    : fromPath || '#';
+
   return {
     internalTo: null,
     externalHref: href,
   };
 };
 
+const toMenuItem = (node: WpMenuItemNode, router: Router): MenuItem => {
+  const targets = resolveLinkTargets(node, router);
+  return {
+    id: node.id,
+    label: node.label,
+    url: node.url,
+    path: node.path,
+    parentId: node.parentId,
+    internalTo: targets.internalTo,
+    externalHref: targets.externalHref,
+  };
+};
+
+const isRootParentId = (parentId: string | null | undefined): boolean =>
+  parentId === null || parentId === undefined || parentId === '';
+
 /** Construye un árbol padre → hijos a partir de la lista plana de WPGraphQL. */
 export const buildMenuTree = (nodes: WpMenuItemNode[], router: Router): NavMenuItem[] => {
   const byId = new Map<string, NavMenuItem>();
 
   for (const node of nodes) {
-    const targets = resolveLinkTargets(node, router);
     byId.set(node.id, {
-      id: node.id,
-      label: node.label,
-      url: node.url,
-      path: node.path,
-      parentId: node.parentId,
+      ...toMenuItem(node, router),
       children: [],
-      internalTo: targets.internalTo,
-      externalHref: targets.externalHref,
     });
   }
 
@@ -127,10 +153,57 @@ export const buildMenuTree = (nodes: WpMenuItemNode[], router: Router): NavMenuI
   return roots;
 };
 
-const fetchMenuNodes = async (): Promise<WpMenuItemNode[]> => {
+/**
+ * Columnas del footer: raíces = títulos; hijos = enlaces de cada columna.
+ */
+export const buildFooterColumns = (nodes: WpMenuItemNode[], router: Router): FooterColumn[] => {
+  const byId = new Map<string, MenuItem>();
+  const childrenByParent = new Map<string, MenuItem[]>();
+
+  for (const node of nodes) {
+    byId.set(node.id, toMenuItem(node, router));
+  }
+
+  for (const item of byId.values()) {
+    if (isRootParentId(item.parentId)) {
+      continue;
+    }
+
+    const parentKey = item.parentId as string;
+    const siblings = childrenByParent.get(parentKey) ?? [];
+    siblings.push(item);
+    childrenByParent.set(parentKey, siblings);
+  }
+
+  const columns: FooterColumn[] = [];
+
+  for (const item of byId.values()) {
+    if (!isRootParentId(item.parentId)) {
+      continue;
+    }
+
+    columns.push({
+      id: item.id,
+      title: item.label,
+      links: childrenByParent.get(item.id) ?? [],
+    });
+  }
+
+  return columns;
+};
+
+export const fetchMenuItemsByLocation = async (
+  location: MenuLocation,
+): Promise<WpMenuItemNode[]> => {
+  const response = await graphQLClient.request<MenuItemsQueryResponse>(GET_MENU_ITEMS_BY_LOCATION, {
+    location,
+  });
+  return response.menuItems?.nodes ?? [];
+};
+
+const fetchPrimaryMenuNodes = async (): Promise<WpMenuItemNode[]> => {
   try {
-    const primary = await graphQLClient.request<MenuItemsQueryResponse>(GET_PRIMARY_MENU_ITEMS);
-    const primaryNodes = primary.menuItems?.nodes ?? [];
+    const primaryNodes = await fetchMenuItemsByLocation('PRIMARY');
     if (primaryNodes.length > 0) {
       return primaryNodes;
     }
@@ -150,6 +223,15 @@ const fetchMenuNodes = async (): Promise<WpMenuItemNode[]> => {
 };
 
 export const fetchPrimaryNavMenu = async (router: Router): Promise<NavMenuItem[]> => {
-  const nodes = await fetchMenuNodes();
+  const nodes = await fetchPrimaryMenuNodes();
   return buildMenuTree(nodes, router);
+};
+
+export const fetchFooterMenuNodes = async (): Promise<WpMenuItemNode[]> => {
+  try {
+    return await fetchMenuItemsByLocation('FOOTER');
+  } catch (error) {
+    console.warn('[Menu] Falló la query por ubicación FOOTER:', error);
+    return [];
+  }
 };
