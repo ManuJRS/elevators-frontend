@@ -4,11 +4,11 @@
     <main class="flex-1">
       <slot />
     </main>
-    <AppFooter />
+    <TheFooter />
   </div>
 </template>
 
 <script setup lang="ts">
-import AppFooter from '../components/layout/AppFooter.vue';
 import MainNav from '../components/layout/MainNav.vue';
+import TheFooter from '../components/layout/TheFooter.vue';
 </script>
