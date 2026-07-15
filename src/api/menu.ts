@@ -20,6 +20,24 @@ const GET_MENU_ITEMS_BY_LOCATION = gql`
         url
         path
         parentId
+        footerSvg
+        isMap
+      }
+    }
+  }
+`;
+
+const GET_FOOTER_MENU_ITEMS = gql`
+  query GetFooterMenuItems {
+    menuItems(where: { location: FOOTER }, first: 100) {
+      nodes {
+        id
+        label
+        url
+        path
+        parentId
+        footerSvg
+        isMap
       }
     }
   }
@@ -36,6 +54,8 @@ const GET_MENU_BY_SLUG = gql`
             url
             path
             parentId
+            footerSvg
+            isMap
           }
         }
       }
@@ -113,16 +133,65 @@ export const resolveLinkTargets = (
   };
 };
 
+const normalizeFooterSvg = (raw: string | null | undefined): string | null => {
+  const trimmed = raw?.trim() ?? '';
+  if (!trimmed || trimmed === '#') {
+    return null;
+  }
+
+  try {
+    // Valida URLs absolutas; rutas relativas del media library también se aceptan.
+    if (/^https?:\/\//i.test(trimmed)) {
+      new URL(trimmed);
+      return trimmed;
+    }
+    if (trimmed.startsWith('/')) {
+      return trimmed;
+    }
+  } catch {
+    return null;
+  }
+
+  return null;
+};
+
+/**
+ * Asegura `output=embed` en la URL del mapa para compatibilidad con iframes
+ * (evita bloqueos por políticas X-Frame-Options en vistas normales de Maps).
+ */
+export const buildMapEmbedSrc = (rawUrl: string | null | undefined): string | null => {
+  const trimmed = rawUrl?.trim() ?? '';
+  if (!trimmed || trimmed === '#') {
+    return null;
+  }
+
+  if (/[?&]output=embed(?:&|#|$)/i.test(trimmed)) {
+    return trimmed;
+  }
+
+  if (trimmed.includes('?')) {
+    return `${trimmed}&output=embed`;
+  }
+
+  return `${trimmed}?output=embed`;
+};
+
 const toMenuItem = (node: WpMenuItemNode, router: Router): MenuItem => {
+  const isMap = node.isMap === true;
   const targets = resolveLinkTargets(node, router);
+  const mapSource = node.url?.trim() || node.path?.trim() || null;
+
   return {
     id: node.id,
     label: node.label,
     url: node.url,
     path: node.path,
     parentId: node.parentId,
+    footerSvg: normalizeFooterSvg(node.footerSvg),
+    isMap,
     internalTo: targets.internalTo,
     externalHref: targets.externalHref,
+    mapEmbedSrc: isMap ? buildMapEmbedSrc(mapSource) : null,
   };
 };
 
@@ -229,7 +298,8 @@ export const fetchPrimaryNavMenu = async (router: Router): Promise<NavMenuItem[]
 
 export const fetchFooterMenuNodes = async (): Promise<WpMenuItemNode[]> => {
   try {
-    return await fetchMenuItemsByLocation('FOOTER');
+    const response = await graphQLClient.request<MenuItemsQueryResponse>(GET_FOOTER_MENU_ITEMS);
+    return response.menuItems?.nodes ?? [];
   } catch (error) {
     console.warn('[Menu] Falló la query por ubicación FOOTER:', error);
     return [];

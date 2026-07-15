@@ -9,31 +9,64 @@
 
       <div
         v-else-if="columns.length > 0"
-        class="grid grid-cols-2 gap-8 md:grid-cols-4 md:gap-10"
+        class="grid grid-cols-2 gap-8 md:grid-cols-4"
       >
         <section v-for="column in columns" :key="column.id">
           <h2 class="text-sm font-semibold uppercase tracking-wider text-white">
             {{ column.title }}
           </h2>
 
-          <ul v-if="column.links.length > 0" class="mt-4 space-y-2">
-            <li v-for="link in column.links" :key="link.id">
+          <ul v-if="column.links.length > 0" class="mt-4 space-y-3">
+            <li v-for="subItem in column.links" :key="subItem.id">
+              <!-- Mapa embebido: solo iframe, sin texto ni SVG -->
+              <iframe
+                v-if="subItem.isMap && subItem.mapEmbedSrc"
+                :src="subItem.mapEmbedSrc"
+                :title="subItem.label || 'Mapa de ubicación'"
+                class="h-44 w-full rounded border border-neutral-800 bg-neutral-950"
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"
+                allowfullscreen
+              />
+
+              <!-- Enlace interno SPA -->
               <RouterLink
-                v-if="link.internalTo"
-                :to="link.internalTo"
-                class="text-sm text-neutral-400 transition hover:text-white"
+                v-else-if="!subItem.isMap && subItem.internalTo"
+                :to="subItem.internalTo"
+                class="group inline-flex items-center text-sm text-neutral-400 transition hover:text-white"
               >
-                {{ link.label }}
+                <img
+                  v-if="subItem.footerSvg"
+                  :src="subItem.footerSvg"
+                  :alt="`${subItem.label} icon`"
+                  class="mr-2 h-5 w-5 object-contain opacity-70 invert transition-all group-hover:opacity-100"
+                  width="20"
+                  height="20"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <span>{{ subItem.label }}</span>
               </RouterLink>
 
+              <!-- Enlace externo / hash / tel / mailto -->
               <a
-                v-else
-                :href="link.externalHref ?? '#'"
-                class="text-sm text-neutral-400 transition hover:text-white"
-                :target="isExternalAbsolute(link.externalHref) ? '_blank' : undefined"
-                :rel="isExternalAbsolute(link.externalHref) ? 'noopener noreferrer' : undefined"
+                v-else-if="!subItem.isMap"
+                :href="subItem.externalHref ?? '#'"
+                class="group inline-flex items-center text-sm text-neutral-400 transition hover:text-white"
+                :target="isExternalAbsolute(subItem.externalHref) ? '_blank' : undefined"
+                :rel="isExternalAbsolute(subItem.externalHref) ? 'noopener noreferrer' : undefined"
               >
-                {{ link.label }}
+                <img
+                  v-if="subItem.footerSvg"
+                  :src="subItem.footerSvg"
+                  :alt="`${subItem.label} icon`"
+                  class="mr-2 h-5 w-5 object-contain opacity-70 invert transition-all group-hover:opacity-100"
+                  width="20"
+                  height="20"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <span>{{ subItem.label }}</span>
               </a>
             </li>
           </ul>
@@ -63,7 +96,10 @@ const menuNodes = ref<WpMenuItemNode[]>([]);
 const isLoading = ref<boolean>(false);
 const error = ref<string | null>(null);
 
-/** Columnas: raíces = títulos; hijos = enlaces agrupados bajo cada padre. */
+/**
+ * Columnas reactivas: raíces (parentId null/vacío) = títulos;
+ * hijos agrupados bajo su padre = listas / mapas de cada columna.
+ */
 const columns = computed<FooterColumn[]>(() => buildFooterColumns(menuNodes.value, router));
 
 const currentYear = computed<number>(() => new Date().getFullYear());
