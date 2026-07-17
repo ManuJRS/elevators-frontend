@@ -3,6 +3,8 @@ import type { Router } from 'vue-router';
 import { graphQLClient } from './client';
 import type {
   FooterColumn,
+  FooterMenuData,
+  FooterMenuQueryResponse,
   MenuItem,
   MenuItemsQueryResponse,
   MenuLocation,
@@ -27,17 +29,22 @@ const GET_MENU_ITEMS_BY_LOCATION = gql`
   }
 `;
 
-const GET_FOOTER_MENU_ITEMS = gql`
-  query GetFooterMenuItems {
-    menuItems(where: { location: FOOTER }, first: 100) {
+const GET_FOOTER_MENU = gql`
+  query GetFooterMenu {
+    menus(where: { location: FOOTER }, first: 1) {
       nodes {
-        id
-        label
-        url
-        path
-        parentId
-        footerSvg
-        isMap
+        copyrightText
+        menuItems(first: 100) {
+          nodes {
+            id
+            label
+            url
+            path
+            parentId
+            footerSvg
+            isMap
+          }
+        }
       }
     }
   }
@@ -296,12 +303,22 @@ export const fetchPrimaryNavMenu = async (router: Router): Promise<NavMenuItem[]
   return buildMenuTree(nodes, router);
 };
 
-export const fetchFooterMenuNodes = async (): Promise<WpMenuItemNode[]> => {
+const FALLBACK_COPYRIGHT = `© ${new Date().getFullYear()} Citizacion Ecommerce. Todos los derechos reservados.`;
+
+export const fetchFooterMenu = async (): Promise<FooterMenuData> => {
   try {
-    const response = await graphQLClient.request<MenuItemsQueryResponse>(GET_FOOTER_MENU_ITEMS);
-    return response.menuItems?.nodes ?? [];
+    const response = await graphQLClient.request<FooterMenuQueryResponse>(GET_FOOTER_MENU);
+    const footerMenu = response.menus?.nodes?.[0] ?? null;
+
+    return {
+      copyrightText: footerMenu?.copyrightText?.trim() || FALLBACK_COPYRIGHT,
+      nodes: footerMenu?.menuItems?.nodes ?? [],
+    };
   } catch (error) {
-    console.warn('[Menu] Falló la query por ubicación FOOTER:', error);
-    return [];
+    console.warn('[Menu] Falló la query del menú FOOTER:', error);
+    return {
+      copyrightText: FALLBACK_COPYRIGHT,
+      nodes: [],
+    };
   }
 };
