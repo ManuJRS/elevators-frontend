@@ -78,7 +78,7 @@
       <div
         class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-4 py-4 text-center text-xs text-neutral-500 sm:flex-row sm:text-left md:px-6"
       >
-        <p>&copy; {{ currentYear }} Citizacion Ecommerce. Todos los derechos reservados.</p>
+        <p>{{ menuData.copyrightText }}</p>
       </div>
     </div>
   </footer>
@@ -87,12 +87,15 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
 import { RouterLink, useRouter } from 'vue-router';
-import { buildFooterColumns, fetchFooterMenuNodes } from '../../api/menu';
-import type { FooterColumn, WpMenuItemNode } from '../../types/menu';
+import { buildFooterColumns, fetchFooterMenu } from '../../api/menu';
+import type { FooterColumn, FooterMenuData } from '../../types/menu';
 
 const router = useRouter();
 
-const menuNodes = ref<WpMenuItemNode[]>([]);
+const menuData = ref<FooterMenuData>({
+  copyrightText: `© ${new Date().getFullYear()} Citizacion Ecommerce. Todos los derechos reservados.`,
+  nodes: [],
+});
 const isLoading = ref<boolean>(false);
 const error = ref<string | null>(null);
 
@@ -100,9 +103,7 @@ const error = ref<string | null>(null);
  * Columnas reactivas: raíces (parentId null/vacío) = títulos;
  * hijos agrupados bajo su padre = listas / mapas de cada columna.
  */
-const columns = computed<FooterColumn[]>(() => buildFooterColumns(menuNodes.value, router));
-
-const currentYear = computed<number>(() => new Date().getFullYear());
+const columns = computed<FooterColumn[]>(() => buildFooterColumns(menuData.value.nodes, router));
 
 const isExternalAbsolute = (href: string | null | undefined): boolean => {
   if (!href || href === '#') return false;
@@ -119,11 +120,10 @@ const loadFooterMenu = async (): Promise<void> => {
   error.value = null;
 
   try {
-    menuNodes.value = await fetchFooterMenuNodes();
+    menuData.value = await fetchFooterMenu();
   } catch (err) {
     console.error('[Footer] No se pudo cargar el menú FOOTER:', err);
     error.value = 'No se pudo cargar el menú de pie de página.';
-    menuNodes.value = [];
   } finally {
     isLoading.value = false;
   }
