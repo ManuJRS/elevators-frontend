@@ -26,6 +26,24 @@ export interface MenusBySlugQueryResponse {
   };
 }
 
+/** Respuesta del nodo padre del menú FOOTER (ítems + copyright general). */
+export interface FooterMenuQueryResponse {
+  menus: {
+    nodes: Array<{
+      copyrightText: string | null;
+      menuItems: {
+        nodes: WpMenuItemNode[];
+      };
+    }>;
+  };
+}
+
+/** Datos consolidados del menú de pie de página. */
+export interface FooterMenuData {
+  copyrightText: string;
+  nodes: WpMenuItemNode[];
+}
+
 /** Elemento de menú normalizado para el frontend (sin `any`). */
 export interface MenuItem {
   id: string;
