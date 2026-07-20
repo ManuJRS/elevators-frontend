@@ -1,5 +1,5 @@
 <template>
-  <div class="flex min-h-screen flex-col bg-[#fcfcfc]">
+  <div class="flex min-h-screen flex-col bg-neutral-950 text-white">
     <MainNav />
     <main class="flex-1">
       <slot />
