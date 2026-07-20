@@ -1,15 +1,15 @@
 <template>
-  <div class="min-h-[calc(100vh-5rem)] bg-slate-950 px-4 py-6 md:px-6 md:py-8">
+  <div class="min-h-[calc(100vh-5rem)] bg-neutral-950 px-4 py-6 md:px-6 md:py-8">
     <div class="mx-auto flex w-full max-w-7xl flex-col gap-6 lg:flex-row">
       <!-- Sidebar -->
       <aside
-        class="w-full shrink-0 rounded-2xl border border-slate-700 bg-slate-900 p-4 shadow-2xl shadow-black/40 lg:w-72 lg:p-5"
+        class="w-full shrink-0 rounded-sm border border-neutral-700 bg-neutral-900 p-4 shadow-2xl shadow-black/40 lg:w-72 lg:p-5"
         aria-label="Menú de cuenta"
       >
-        <div class="mb-6 border-b border-slate-700 pb-5">
-          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-sky-400">Mi cuenta</p>
+        <div class="mb-6 border-b border-neutral-700 pb-5">
+          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-amber-400">Mi cuenta</p>
           <h1 class="mt-2 text-xl font-bold text-white">Panel corporativo</h1>
-          <p class="mt-1 truncate text-sm text-slate-400">
+          <p class="mt-1 truncate text-sm text-neutral-400">
             {{ authStore.userEmail || 'Cuenta B2B' }}
           </p>
         </div>
@@ -29,7 +29,7 @@
             </span>
             <span class="min-w-0 flex-1 text-left">
               <span class="block text-sm font-semibold">{{ item.label }}</span>
-              <span class="block truncate text-xs text-slate-500">{{ item.description }}</span>
+              <span class="block truncate text-xs text-neutral-500">{{ item.description }}</span>
             </span>
           </button>
         </nav>
@@ -44,11 +44,11 @@
           aria-labelledby="dashboard-heading"
         >
           <header>
-            <p class="text-xs font-semibold uppercase tracking-[0.2em] text-sky-400">Escritorio</p>
+            <p class="text-xs font-semibold uppercase tracking-[0.2em] text-amber-400">Escritorio</p>
             <h2 id="dashboard-heading" class="mt-2 text-2xl font-bold text-white">
               ¡Bienvenido de vuelta, {{ welcomeName }}!
             </h2>
-            <p class="mt-2 max-w-2xl text-sm text-slate-400">
+            <p class="mt-2 max-w-2xl text-sm text-neutral-400">
               Desde aquí puedes consultar pedidos, revisar cotizaciones y mantener actualizados los
               datos operativos de tu empresa.
             </p>
@@ -64,10 +64,10 @@
                 <IconOrders />
               </span>
               <span>
-                <span class="block text-base font-semibold text-white group-hover:text-sky-300">
+                <span class="block text-base font-semibold text-white group-hover:text-amber-300">
                   Ver mis pedidos
                 </span>
-                <span class="mt-1 block text-sm text-slate-400">
+                <span class="mt-1 block text-sm text-neutral-400">
                   Historial de compras y estados de entrega en WooCommerce.
                 </span>
               </span>
@@ -82,10 +82,10 @@
                 <IconQuotes />
               </span>
               <span>
-                <span class="block text-base font-semibold text-white group-hover:text-sky-300">
+                <span class="block text-base font-semibold text-white group-hover:text-amber-300">
                   Revisar cotizaciones
                 </span>
-                <span class="mt-1 block text-sm text-slate-400">
+                <span class="mt-1 block text-sm text-neutral-400">
                   Solicitudes enviadas al cotizador industrial de la plataforma.
                 </span>
               </span>
@@ -100,10 +100,10 @@
                 <IconCompany />
               </span>
               <span>
-                <span class="block text-base font-semibold text-white group-hover:text-sky-300">
+                <span class="block text-base font-semibold text-white group-hover:text-amber-300">
                   Actualizar datos corporativos
                 </span>
-                <span class="mt-1 block text-sm text-slate-400">
+                <span class="mt-1 block text-sm text-neutral-400">
                   Teléfono, empresa y dirección de envío sincronizados con WordPress.
                 </span>
               </span>
@@ -114,10 +114,10 @@
                 <IconCatalog />
               </span>
               <span>
-                <span class="block text-base font-semibold text-white group-hover:text-sky-300">
+                <span class="block text-base font-semibold text-white group-hover:text-amber-300">
                   Ir al catálogo
                 </span>
-                <span class="mt-1 block text-sm text-slate-400">
+                <span class="mt-1 block text-sm text-neutral-400">
                   Explora refacciones y agrega productos al carrito híbrido.
                 </span>
               </span>
@@ -135,9 +135,9 @@
           aria-labelledby="quotes-heading"
         >
           <header>
-            <p class="text-xs font-semibold uppercase tracking-[0.2em] text-sky-400">Cotizaciones</p>
+            <p class="text-xs font-semibold uppercase tracking-[0.2em] text-amber-400">Cotizaciones</p>
             <h2 id="quotes-heading" class="mt-2 text-2xl font-bold text-white">Mis cotizaciones</h2>
-            <p class="mt-2 text-sm text-slate-400">
+            <p class="mt-2 text-sm text-neutral-400">
               Solicitudes enviadas al cotizador. Vista de demostración con estados de seguimiento.
             </p>
           </header>
@@ -150,11 +150,11 @@
             >
               <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                  <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                  <p class="text-xs font-semibold uppercase tracking-wide text-neutral-500">
                     {{ quote.id }}
                   </p>
                   <h3 class="mt-1 text-base font-semibold text-white">{{ quote.title }}</h3>
-                  <p class="mt-1 text-sm text-slate-400">Enviada el {{ quote.date }}</p>
+                  <p class="mt-1 text-sm text-neutral-400">Enviada el {{ quote.date }}</p>
                 </div>
 
                 <span class="status-badge" :class="quote.statusClass">
@@ -163,7 +163,7 @@
               </div>
             </article>
 
-            <p class="rounded-lg border border-dashed border-slate-700 bg-slate-900/50 px-4 py-3 text-center text-sm text-slate-500">
+            <p class="rounded-lg border border-dashed border-neutral-700 bg-neutral-900/50 px-4 py-3 text-center text-sm text-neutral-500">
               Las cotizaciones reales se conectarán al cotizador en una fase posterior del proyecto.
             </p>
           </div>
@@ -330,9 +330,9 @@ const setActiveTab = (tab: AccountTab): void => {
 
 <style scoped>
 .panel-card {
-  border-radius: 1rem;
-  border: 1px solid #334155;
-  background-color: #0f172a;
+  border-radius: 0.125rem;
+  border: 1px solid #262626;
+  background-color: #171717;
   padding: 1.5rem;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.45);
 }
@@ -348,11 +348,11 @@ const setActiveTab = (tab: AccountTab): void => {
   width: 100%;
   align-items: center;
   gap: 0.75rem;
-  border-radius: 0.75rem;
+  border-radius: 0.125rem;
   border: 1px solid transparent;
   border-left: 3px solid transparent;
   padding: 0.75rem;
-  color: #cbd5e1;
+  color: #a3a3a3;
   transition:
     background-color 0.15s ease,
     border-color 0.15s ease,
@@ -360,14 +360,14 @@ const setActiveTab = (tab: AccountTab): void => {
 }
 
 .sidebar-link:hover {
-  background-color: #1e293b;
-  color: #f8fafc;
+  background-color: #262626;
+  color: #fafafa;
 }
 
 .sidebar-link--active {
-  border-left-color: #38bdf8;
-  background-color: rgba(14, 165, 233, 0.1);
-  color: #f8fafc;
+  border-left-color: #fbbf24;
+  background-color: rgba(251, 191, 36, 0.1);
+  color: #fafafa;
 }
 
 .sidebar-link__icon {
@@ -377,22 +377,22 @@ const setActiveTab = (tab: AccountTab): void => {
   flex-shrink: 0;
   align-items: center;
   justify-content: center;
-  border-radius: 0.5rem;
-  background-color: #1e293b;
-  color: #7dd3fc;
+  border-radius: 0.125rem;
+  background-color: #262626;
+  color: #fbbf24;
 }
 
 .sidebar-link--active .sidebar-link__icon {
-  background-color: rgba(14, 165, 233, 0.2);
-  color: #bae6fd;
+  background-color: rgba(251, 191, 36, 0.2);
+  color: #fcd34d;
 }
 
 .quick-card {
   display: flex;
   gap: 1rem;
-  border-radius: 0.875rem;
-  border: 1px solid #334155;
-  background-color: #111827;
+  border-radius: 0.125rem;
+  border: 1px solid #262626;
+  background-color: #0a0a0a;
   padding: 1.25rem;
   text-align: left;
   transition:
@@ -402,8 +402,8 @@ const setActiveTab = (tab: AccountTab): void => {
 }
 
 .quick-card:hover {
-  border-color: #38bdf8;
-  background-color: #172554;
+  border-color: #fbbf24;
+  background-color: #262626;
   transform: translateY(-1px);
 }
 
@@ -414,15 +414,15 @@ const setActiveTab = (tab: AccountTab): void => {
   flex-shrink: 0;
   align-items: center;
   justify-content: center;
-  border-radius: 0.75rem;
-  background-color: #1e293b;
-  color: #7dd3fc;
+  border-radius: 0.125rem;
+  background-color: #262626;
+  color: #fbbf24;
 }
 
 .quote-card {
-  border-radius: 0.875rem;
-  border: 1px solid #334155;
-  background-color: #111827;
+  border-radius: 0.125rem;
+  border: 1px solid #262626;
+  background-color: #0a0a0a;
   padding: 1rem 1.25rem;
 }
 

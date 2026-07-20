@@ -1,15 +1,15 @@
 <template>
-  <section class="rounded-2xl border border-slate-700 bg-slate-900 p-6 shadow-xl shadow-black/30 md:p-8">
-    <div class="mb-6 flex flex-col gap-2 border-b border-slate-700 pb-5 sm:flex-row sm:items-end sm:justify-between">
+  <section class="rounded-sm border border-neutral-700 bg-neutral-900 p-6 shadow-xl shadow-black/30 md:p-8">
+    <div class="mb-6 flex flex-col gap-2 border-b border-neutral-700 pb-5 sm:flex-row sm:items-end sm:justify-between">
       <div>
-        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-sky-400">Perfil corporativo</p>
+        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-amber-400">Perfil corporativo</p>
         <h2 class="mt-1 text-xl font-bold text-white">Datos corporativos y de envío</h2>
-        <p class="mt-1 text-sm text-slate-400">
+        <p class="mt-1 text-sm text-neutral-400">
           Administra la información de facturación y entrega vinculada a tu cuenta B2B.
         </p>
       </div>
 
-      <p v-if="isLoadingInitial" class="text-sm font-medium text-sky-300">Cargando datos...</p>
+      <p v-if="isLoadingInitial" class="text-sm font-medium text-amber-300">Cargando datos...</p>
     </div>
 
     <div
@@ -23,7 +23,7 @@
     <form class="space-y-6" @submit.prevent="handleSubmit">
       <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
         <div>
-          <label for="account-phone" class="mb-1.5 block text-sm font-semibold text-slate-300">
+          <label for="account-phone" class="mb-1.5 block text-sm font-semibold text-neutral-300">
             Teléfono <span class="text-red-400">*</span>
           </label>
           <input
@@ -39,7 +39,7 @@
         </div>
 
         <div>
-          <label for="account-company" class="mb-1.5 block text-sm font-semibold text-slate-300">
+          <label for="account-company" class="mb-1.5 block text-sm font-semibold text-neutral-300">
             Empresa
           </label>
           <input
@@ -54,7 +54,7 @@
         </div>
 
         <div class="md:col-span-2">
-          <label for="account-address" class="mb-1.5 block text-sm font-semibold text-slate-300">
+          <label for="account-address" class="mb-1.5 block text-sm font-semibold text-neutral-300">
             Dirección de envío <span class="text-red-400">*</span>
           </label>
           <input
@@ -70,7 +70,7 @@
         </div>
 
         <div>
-          <label for="account-city" class="mb-1.5 block text-sm font-semibold text-slate-300">
+          <label for="account-city" class="mb-1.5 block text-sm font-semibold text-neutral-300">
             Ciudad <span class="text-red-400">*</span>
           </label>
           <input
@@ -86,7 +86,7 @@
         </div>
 
         <div>
-          <label for="account-postcode" class="mb-1.5 block text-sm font-semibold text-slate-300">
+          <label for="account-postcode" class="mb-1.5 block text-sm font-semibold text-neutral-300">
             Código postal <span class="text-red-400">*</span>
           </label>
           <input
@@ -113,7 +113,7 @@
       <button
         type="submit"
         :disabled="isFormDisabled || isSaving"
-        class="flex w-full items-center justify-center rounded-lg bg-sky-600 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-sky-900/30 transition hover:bg-sky-500 disabled:cursor-not-allowed disabled:opacity-70 sm:w-auto sm:min-w-[220px]"
+        class="flex w-full items-center justify-center rounded-lg border border-amber-400 bg-amber-400 px-4 py-3 text-sm font-bold uppercase tracking-wider text-neutral-950 shadow-lg shadow-black/40 transition hover:bg-transparent hover:text-amber-300 disabled:cursor-not-allowed disabled:opacity-70 sm:w-auto sm:min-w-[220px]"
       >
         {{ isSaving ? 'Cargando...' : 'Guardar Cambios' }}
       </button>
@@ -231,11 +231,11 @@ onMounted(() => {
 <style scoped>
 .field-input {
   width: 100%;
-  border-radius: 0.5rem;
-  border: 1px solid #334155;
-  background-color: #0f172a;
+  border-radius: 0.125rem;
+  border: 1px solid #262626;
+  background-color: #171717;
   padding: 0.625rem 0.875rem;
-  color: #f8fafc;
+  color: #fafafa;
   outline: none;
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
@@ -245,8 +245,8 @@ onMounted(() => {
 }
 
 .field-input:focus {
-  border-color: #38bdf8;
-  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+  border-color: #fbbf24;
+  box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.18);
 }
 
 .field-input:disabled {
@@ -260,7 +260,7 @@ onMounted(() => {
   bottom: 1.25rem;
   z-index: 50;
   max-width: 24rem;
-  border-radius: 0.75rem;
+  border-radius: 0.125rem;
   border: 1px solid rgba(52, 211, 153, 0.35);
   background: rgba(6, 78, 59, 0.95);
   padding: 0.875rem 1rem;
