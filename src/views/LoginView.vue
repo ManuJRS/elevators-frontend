@@ -1,21 +1,21 @@
 <template>
   <div
-    class="flex min-h-[calc(100vh-5rem)] items-center justify-center bg-slate-100 px-4 py-10"
+    class="flex min-h-[calc(100vh-5rem)] items-center justify-center bg-neutral-950 px-4 py-10"
   >
     <section
-      class="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-200/60"
+      class="w-full max-w-md rounded-sm border border-neutral-800 bg-neutral-900 p-8 shadow-2xl shadow-black/40"
     >
       <div class="mb-8 text-center">
-        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-sky-700">Acceso corporativo</p>
-        <h1 class="mt-2 text-2xl font-bold text-slate-900">Elevadores Configurator</h1>
-        <p class="mt-2 text-sm text-slate-500">
+        <p class="text-xs font-bold uppercase tracking-[0.3em] text-amber-400">Acceso corporativo</p>
+        <h1 class="mt-2 text-2xl font-black uppercase tracking-tight text-white">Elevadores Configurator</h1>
+        <p class="mt-2 text-sm text-neutral-400">
           Inicia sesión para acceder al catálogo y al checkout híbrido.
         </p>
       </div>
 
       <form class="space-y-5" @submit.prevent="handleSubmit">
         <div>
-          <label for="username" class="mb-1.5 block text-sm font-semibold text-slate-700">
+          <label for="username" class="mb-1.5 block text-sm font-semibold text-neutral-300">
             Usuario
           </label>
           <input
@@ -25,12 +25,12 @@
             autocomplete="username"
             required
             placeholder="usuario@empresa.com"
-            class="w-full rounded-lg border border-slate-300 bg-slate-50 px-3.5 py-2.5 text-slate-900 outline-none transition focus:border-sky-600 focus:bg-white focus:ring-2 focus:ring-sky-100"
+            class="w-full rounded-sm border border-neutral-700 bg-neutral-950 px-3.5 py-2.5 text-white outline-none transition focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20"
           />
         </div>
 
         <div>
-          <label for="password" class="mb-1.5 block text-sm font-semibold text-slate-700">
+          <label for="password" class="mb-1.5 block text-sm font-semibold text-neutral-300">
             Contraseña
           </label>
           <input
@@ -40,12 +40,12 @@
             autocomplete="current-password"
             required
             placeholder="••••••••"
-            class="w-full rounded-lg border border-slate-300 bg-slate-50 px-3.5 py-2.5 text-slate-900 outline-none transition focus:border-sky-600 focus:bg-white focus:ring-2 focus:ring-sky-100"
+            class="w-full rounded-sm border border-neutral-700 bg-neutral-950 px-3.5 py-2.5 text-white outline-none transition focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20"
           />
           <div class="mt-2 text-right">
             <RouterLink
               to="/forgot-password"
-              class="text-xs font-medium text-slate-500 transition hover:text-sky-700"
+              class="text-xs font-medium text-neutral-500 transition hover:text-amber-400"
             >
               ¿Olvidaste tu contraseña?
             </RouterLink>
@@ -54,7 +54,7 @@
 
         <p
           v-if="successMessage"
-          class="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-700"
+          class="rounded-sm border border-emerald-800 bg-emerald-950/40 px-3 py-2 text-sm text-emerald-300"
           role="status"
         >
           {{ successMessage }}
@@ -62,7 +62,7 @@
 
         <p
           v-if="errorMessage"
-          class="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700"
+          class="rounded-sm border border-red-900/60 bg-red-950/40 px-3 py-2 text-sm text-red-300"
           role="alert"
         >
           {{ errorMessage }}
@@ -71,15 +71,15 @@
         <button
           type="submit"
           :disabled="isLoading"
-          class="flex w-full items-center justify-center rounded-lg bg-sky-700 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-sky-800 disabled:cursor-not-allowed disabled:opacity-70"
+          class="flex w-full items-center justify-center rounded-sm border border-amber-400 bg-amber-400 px-4 py-2.5 text-sm font-bold uppercase tracking-wider text-neutral-950 transition hover:bg-transparent hover:text-amber-300 disabled:cursor-not-allowed disabled:opacity-70"
         >
           {{ isLoading ? 'Validando credenciales...' : 'Iniciar sesión' }}
         </button>
       </form>
 
-      <p class="mt-6 text-center text-sm text-slate-500">
+      <p class="mt-6 text-center text-sm text-neutral-500">
         ¿No tienes cuenta?
-        <RouterLink to="/register" class="font-semibold text-sky-700 hover:text-sky-800">
+        <RouterLink to="/register" class="font-semibold text-amber-400 hover:text-amber-500">
           Regístrate
         </RouterLink>
       </p>
