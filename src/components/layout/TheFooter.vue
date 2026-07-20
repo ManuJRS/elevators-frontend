@@ -12,7 +12,7 @@
         class="grid grid-cols-2 gap-8 md:grid-cols-4"
       >
         <section v-for="column in columns" :key="column.id">
-          <h2 class="text-sm font-semibold uppercase tracking-wider text-white">
+          <h2 class="text-sm font-semibold uppercase tracking-wider text-amber-400">
             {{ column.title }}
           </h2>
 

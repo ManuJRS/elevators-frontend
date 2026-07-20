@@ -1,25 +1,25 @@
 <template>
   <div
-    class="flex min-h-[calc(100vh-5rem)] items-center justify-center bg-slate-950 px-4 py-10"
+    class="flex min-h-[calc(100vh-5rem)] items-center justify-center bg-neutral-950 px-4 py-10"
   >
     <section
-      class="w-full max-w-3xl rounded-2xl border border-slate-700 bg-slate-900 p-8 shadow-2xl shadow-black/40"
+      class="w-full max-w-3xl rounded-sm border border-neutral-700 bg-neutral-900 p-8 shadow-2xl shadow-black/40"
     >
       <div class="mb-8 text-center">
-        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-sky-400">Alta corporativa</p>
+        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-amber-400">Alta corporativa</p>
         <h1 class="mt-2 text-2xl font-bold text-white">Crear cuenta empresarial</h1>
-        <p class="mt-2 text-sm text-slate-400">
+        <p class="mt-2 text-sm text-neutral-400">
           Registra tus datos de facturación y envío para cotizar y comprar en la plataforma híbrida.
         </p>
       </div>
 
       <form class="space-y-6" @submit.prevent="handleSubmit">
         <div class="space-y-4">
-          <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-300">Acceso</h2>
+          <h2 class="text-sm font-semibold uppercase tracking-wide text-neutral-300">Acceso</h2>
 
           <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div class="md:col-span-1">
-              <label for="register-username" class="mb-1.5 block text-sm font-semibold text-slate-300">
+              <label for="register-username" class="mb-1.5 block text-sm font-semibold text-neutral-300">
                 Nombre de usuario <span class="text-red-400">*</span>
               </label>
               <input
@@ -34,7 +34,7 @@
             </div>
 
             <div class="md:col-span-1">
-              <label for="register-first-name" class="mb-1.5 block text-sm font-semibold text-slate-300">
+              <label for="register-first-name" class="mb-1.5 block text-sm font-semibold text-neutral-300">
                 Nombre <span class="text-red-400">*</span>
               </label>
               <input
@@ -49,7 +49,7 @@
             </div>
 
             <div class="md:col-span-1">
-              <label for="register-last-name" class="mb-1.5 block text-sm font-semibold text-slate-300">
+              <label for="register-last-name" class="mb-1.5 block text-sm font-semibold text-neutral-300">
                 Apellidos <span class="text-red-400">*</span>
               </label>
               <input
@@ -64,7 +64,7 @@
             </div>
 
             <div class="md:col-span-1">
-              <label for="register-email" class="mb-1.5 block text-sm font-semibold text-slate-300">
+              <label for="register-email" class="mb-1.5 block text-sm font-semibold text-neutral-300">
                 Correo electrónico <span class="text-red-400">*</span>
               </label>
               <input
@@ -79,7 +79,7 @@
             </div>
 
             <div class="md:col-span-2">
-              <label for="register-password" class="mb-1.5 block text-sm font-semibold text-slate-300">
+              <label for="register-password" class="mb-1.5 block text-sm font-semibold text-neutral-300">
                 Contraseña <span class="text-red-400">*</span>
               </label>
               <input
@@ -96,12 +96,12 @@
           </div>
         </div>
 
-        <div class="space-y-4 border-t border-slate-700 pt-6">
-          <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-300">Facturación</h2>
+        <div class="space-y-4 border-t border-neutral-700 pt-6">
+          <h2 class="text-sm font-semibold uppercase tracking-wide text-neutral-300">Facturación</h2>
 
           <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div>
-              <label for="register-phone" class="mb-1.5 block text-sm font-semibold text-slate-300">
+              <label for="register-phone" class="mb-1.5 block text-sm font-semibold text-neutral-300">
                 Teléfono de facturación <span class="text-red-400">*</span>
               </label>
               <input
@@ -116,7 +116,7 @@
             </div>
 
             <div>
-              <label for="register-company" class="mb-1.5 block text-sm font-semibold text-slate-300">
+              <label for="register-company" class="mb-1.5 block text-sm font-semibold text-neutral-300">
                 Nombre de la empresa
               </label>
               <input
@@ -131,12 +131,12 @@
           </div>
         </div>
 
-        <div class="space-y-4 border-t border-slate-700 pt-6">
-          <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-300">Envío</h2>
+        <div class="space-y-4 border-t border-neutral-700 pt-6">
+          <h2 class="text-sm font-semibold uppercase tracking-wide text-neutral-300">Envío</h2>
 
           <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div class="md:col-span-2">
-              <label for="register-address" class="mb-1.5 block text-sm font-semibold text-slate-300">
+              <label for="register-address" class="mb-1.5 block text-sm font-semibold text-neutral-300">
                 Dirección de envío <span class="text-red-400">*</span>
               </label>
               <input
@@ -151,7 +151,7 @@
             </div>
 
             <div>
-              <label for="register-city" class="mb-1.5 block text-sm font-semibold text-slate-300">
+              <label for="register-city" class="mb-1.5 block text-sm font-semibold text-neutral-300">
                 Ciudad <span class="text-red-400">*</span>
               </label>
               <input
@@ -166,7 +166,7 @@
             </div>
 
             <div>
-              <label for="register-postcode" class="mb-1.5 block text-sm font-semibold text-slate-300">
+              <label for="register-postcode" class="mb-1.5 block text-sm font-semibold text-neutral-300">
                 Código postal <span class="text-red-400">*</span>
               </label>
               <input
@@ -193,15 +193,15 @@
         <button
           type="submit"
           :disabled="isLoading"
-          class="flex w-full items-center justify-center rounded-lg bg-sky-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-sky-500 disabled:cursor-not-allowed disabled:opacity-70"
+          class="flex w-full items-center justify-center rounded-lg border border-amber-400 bg-amber-400 px-4 py-2.5 text-sm font-bold uppercase tracking-wider text-neutral-950 transition hover:bg-transparent hover:text-amber-300 disabled:cursor-not-allowed disabled:opacity-70"
         >
           {{ isLoading ? 'Creando cuenta corporativa...' : 'Registrarse' }}
         </button>
       </form>
 
-      <p class="mt-6 text-center text-sm text-slate-400">
+      <p class="mt-6 text-center text-sm text-neutral-400">
         ¿Ya tienes cuenta?
-        <RouterLink to="/login" class="font-semibold text-sky-400 hover:text-sky-300">
+        <RouterLink to="/login" class="font-semibold text-amber-400 hover:text-amber-300">
           Inicia sesión
         </RouterLink>
       </p>
@@ -286,11 +286,11 @@ const handleSubmit = async (): Promise<void> => {
 <style scoped>
 .field-input {
   width: 100%;
-  border-radius: 0.5rem;
-  border: 1px solid #334155;
-  background-color: #0f172a;
+  border-radius: 0.125rem;
+  border: 1px solid #262626;
+  background-color: #171717;
   padding: 0.625rem 0.875rem;
-  color: #f8fafc;
+  color: #fafafa;
   outline: none;
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
@@ -300,7 +300,7 @@ const handleSubmit = async (): Promise<void> => {
 }
 
 .field-input:focus {
-  border-color: #38bdf8;
-  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+  border-color: #fbbf24;
+  box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.18);
 }
 </style>

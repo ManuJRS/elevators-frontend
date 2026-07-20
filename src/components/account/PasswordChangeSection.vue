@@ -1,9 +1,9 @@
 <template>
-  <section class="rounded-2xl border border-slate-700 bg-slate-900 p-6 shadow-xl shadow-black/30 md:p-8">
-    <div class="mb-6 border-b border-slate-700 pb-5">
-      <p class="text-xs font-semibold uppercase tracking-[0.2em] text-sky-400">Acceso seguro</p>
+  <section class="rounded-sm border border-neutral-700 bg-neutral-900 p-6 shadow-xl shadow-black/30 md:p-8">
+    <div class="mb-6 border-b border-neutral-700 pb-5">
+      <p class="text-xs font-semibold uppercase tracking-[0.2em] text-amber-400">Acceso seguro</p>
       <h2 class="mt-1 text-xl font-bold text-white">Seguridad y Contraseña</h2>
-      <p class="mt-1 text-sm text-slate-400">
+      <p class="mt-1 text-sm text-neutral-400">
         Actualiza tu contraseña de acceso corporativo. El cambio se sincroniza directamente con WordPress.
       </p>
     </div>
@@ -11,7 +11,7 @@
     <form class="space-y-5" @submit.prevent="handleSubmit">
       <div class="space-y-4">
         <div>
-          <label for="account-new-password" class="mb-1.5 block text-sm font-semibold text-slate-300">
+          <label for="account-new-password" class="mb-1.5 block text-sm font-semibold text-neutral-300">
             Nueva Contraseña <span class="text-red-400">*</span>
           </label>
           <input
@@ -28,7 +28,7 @@
         </div>
 
         <div>
-          <label for="account-confirm-password" class="mb-1.5 block text-sm font-semibold text-slate-300">
+          <label for="account-confirm-password" class="mb-1.5 block text-sm font-semibold text-neutral-300">
             Confirmar Nueva Contraseña <span class="text-red-400">*</span>
           </label>
           <input
@@ -56,7 +56,7 @@
       <button
         type="submit"
         :disabled="isLoadingPassword"
-        class="flex w-full items-center justify-center rounded-lg border border-amber-500/30 bg-amber-600/90 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-amber-900/20 transition hover:bg-amber-500 disabled:cursor-not-allowed disabled:opacity-70 sm:w-auto sm:min-w-[220px]"
+        class="flex w-full items-center justify-center rounded-lg border border-amber-500/30 bg-amber-600/90 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-amber-900/20 transition hover:bg-transparent hover:text-amber-300 disabled:cursor-not-allowed disabled:opacity-70 sm:w-auto sm:min-w-[220px]"
       >
         {{ isLoadingPassword ? 'Cargando...' : 'Actualizar Contraseña' }}
       </button>
@@ -161,11 +161,11 @@ const handleSubmit = async (): Promise<void> => {
 <style scoped>
 .field-input {
   width: 100%;
-  border-radius: 0.5rem;
-  border: 1px solid #334155;
-  background-color: #0f172a;
+  border-radius: 0.125rem;
+  border: 1px solid #262626;
+  background-color: #171717;
   padding: 0.625rem 0.875rem;
-  color: #f8fafc;
+  color: #fafafa;
   outline: none;
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
@@ -175,8 +175,8 @@ const handleSubmit = async (): Promise<void> => {
 }
 
 .field-input:focus {
-  border-color: #38bdf8;
-  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+  border-color: #fbbf24;
+  box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.18);
 }
 
 .field-input:disabled {
@@ -190,7 +190,7 @@ const handleSubmit = async (): Promise<void> => {
   bottom: 1.25rem;
   z-index: 50;
   max-width: 24rem;
-  border-radius: 0.75rem;
+  border-radius: 0.125rem;
   border: 1px solid rgba(52, 211, 153, 0.35);
   background: rgba(6, 78, 59, 0.95);
   padding: 0.875rem 1rem;
