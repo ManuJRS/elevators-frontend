@@ -3,35 +3,35 @@
   <!-- Skeleton Loader -->
   <div v-if="loading" class="animate-pulse space-y-8" aria-busy="true" aria-label="Cargando ficha técnica">
     <div class="grid gap-8 lg:grid-cols-2">
-      <div class="aspect-square rounded-2xl bg-slate-800" />
+      <div class="aspect-square rounded-sm bg-neutral-800" />
       <div class="space-y-4">
-        <div class="h-8 w-3/4 rounded-lg bg-slate-800" />
-        <div class="h-4 w-1/3 rounded bg-slate-800" />
-        <div class="h-12 w-full rounded-xl bg-slate-800" />
-        <div class="h-10 w-2/5 rounded-lg bg-slate-800" />
-        <div class="h-12 w-full rounded-xl bg-slate-800" />
+        <div class="h-8 w-3/4 rounded-lg bg-neutral-800" />
+        <div class="h-4 w-1/3 rounded bg-neutral-800" />
+        <div class="h-12 w-full rounded-sm bg-neutral-800" />
+        <div class="h-10 w-2/5 rounded-lg bg-neutral-800" />
+        <div class="h-12 w-full rounded-sm bg-neutral-800" />
       </div>
     </div>
-    <div class="h-12 rounded-xl bg-slate-800" />
-    <div class="h-48 rounded-2xl bg-slate-800" />
+    <div class="h-12 rounded-sm bg-neutral-800" />
+    <div class="h-48 rounded-sm bg-neutral-800" />
   </div>
 
   <!-- Error / Not Found -->
   <div
     v-else-if="error || !product"
-    class="rounded-2xl border border-red-900/50 bg-slate-900 px-6 py-16 text-center shadow-xl shadow-black/20"
+    class="rounded-sm border border-red-900/50 bg-neutral-900 px-6 py-16 text-center shadow-xl shadow-black/20"
     role="alert"
   >
     <p class="text-xs font-semibold uppercase tracking-[0.25em] text-red-400">Error de catálogo</p>
     <h1 class="mt-3 text-2xl font-bold text-white">
       Componente industrial no localizado en el catálogo
     </h1>
-    <p class="mx-auto mt-3 max-w-lg text-sm text-slate-400">
+    <p class="mx-auto mt-3 max-w-lg text-sm text-neutral-400">
       {{ error ?? 'No se encontró la refacción solicitada en el servidor Docker de WordPress.' }}
     </p>
     <RouterLink
       to="/catalogo"
-      class="mt-8 inline-flex items-center rounded-lg border border-sky-600 bg-sky-700 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-sky-600"
+      class="mt-8 inline-flex items-center rounded-lg border border-amber-400 bg-amber-400 px-5 py-2.5 text-sm font-semibold text-neutral-950 transition hover:bg-transparent hover:text-amber-300"
     >
       Volver al catálogo
     </RouterLink>
@@ -39,21 +39,21 @@
 
   <!-- Product Detail -->
   <template v-else>
-    <nav class="mb-6 text-sm text-slate-500" aria-label="Ruta de navegación">
-      <RouterLink to="/catalogo" class="transition hover:text-sky-400">Catálogo</RouterLink>
-      <span class="mx-2 text-slate-600">/</span>
-      <span class="text-slate-300">{{ product.name }}</span>
+    <nav class="mb-6 text-sm text-neutral-500" aria-label="Ruta de navegación">
+      <RouterLink to="/catalogo" class="transition hover:text-amber-400">Catálogo</RouterLink>
+      <span class="mx-2 text-neutral-600">/</span>
+      <span class="text-neutral-300">{{ product.name }}</span>
     </nav>
 
     <!-- Purchase Block -->
     <section
-      class="grid gap-8 rounded-2xl border border-slate-800 bg-slate-900 p-6 shadow-2xl shadow-black/30 md:p-8 lg:grid-cols-2"
+      class="grid gap-8 rounded-sm border border-neutral-800 bg-neutral-900 p-6 shadow-2xl shadow-black/30 md:p-8 lg:grid-cols-2"
       aria-label="Información de compra"
     >
       <!-- Gallery -->
       <div>
         <div
-          class="flex aspect-square items-center justify-center overflow-hidden rounded-xl border border-slate-700 bg-slate-950"
+          class="flex aspect-square items-center justify-center overflow-hidden rounded-sm border border-neutral-700 bg-neutral-950"
         >
           <img
             v-if="activeImage"
@@ -61,7 +61,7 @@
             :alt="activeImage.altText || product.name"
             class="h-full w-full object-cover"
           />
-          <span v-else class="text-sm italic text-slate-500">Sin imagen industrial</span>
+          <span v-else class="text-sm italic text-neutral-500">Sin imagen industrial</span>
         </div>
 
         <div
@@ -77,8 +77,8 @@
             class="h-16 w-16 overflow-hidden rounded-lg border transition"
             :class="
               activeImage?.sourceUrl === thumb.sourceUrl
-                ? 'border-sky-500 ring-2 ring-sky-500/40'
-                : 'border-slate-700 hover:border-slate-500'
+                ? 'border-amber-400 ring-2 ring-amber-400/40'
+                : 'border-neutral-700 hover:border-neutral-500'
             "
             @click="selectedGalleryUrl = thumb.sourceUrl"
           >
@@ -93,7 +93,7 @@
 
       <!-- Buy Panel -->
       <div class="flex flex-col">
-        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-sky-400">Ficha técnica</p>
+        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-amber-400">Ficha técnica</p>
         <h1 class="mt-2 text-2xl font-bold text-white md:text-3xl">{{ product.name }}</h1>
 
         <div
@@ -104,7 +104,7 @@
           <span
             v-for="category in productCategories"
             :key="category.id"
-            class="inline-flex rounded-full bg-slate-800 px-3 py-1 text-xs font-medium text-sky-300 ring-1 ring-slate-700"
+            class="inline-flex rounded-full bg-neutral-800 px-3 py-1 text-xs font-medium text-amber-300 ring-1 ring-neutral-700"
           >
             {{ category.name }}
           </span>
@@ -118,14 +118,14 @@
           >
             <label
               :for="`attr-${attribute.id}`"
-              class="block text-xs font-semibold uppercase tracking-wider text-slate-400"
+              class="block text-xs font-semibold uppercase tracking-wider text-neutral-400"
             >
               {{ resolveAttributeLabel(attribute.label, attribute.name) }}
             </label>
             <select
               :id="`attr-${attribute.id}`"
               :value="selectedAttributes[getAttributeKey(attribute)] ?? ''"
-              class="w-full rounded-lg border border-slate-700 bg-slate-950 px-3.5 py-2.5 text-sm text-white outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20"
+              class="w-full rounded-lg border border-neutral-700 bg-neutral-950 px-3.5 py-2.5 text-sm text-white outline-none transition focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20"
               @change="handleAttributeChange(getAttributeKey(attribute), $event)"
             >
               <option
@@ -144,14 +144,14 @@
           >
             <label
               for="variant-select"
-              class="block text-xs font-semibold uppercase tracking-wider text-slate-400"
+              class="block text-xs font-semibold uppercase tracking-wider text-neutral-400"
             >
               Variante
             </label>
             <select
               id="variant-select"
               :value="selectedVariationId"
-              class="w-full rounded-lg border border-slate-700 bg-slate-950 px-3.5 py-2.5 text-sm text-white outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20"
+              class="w-full rounded-lg border border-neutral-700 bg-neutral-950 px-3.5 py-2.5 text-sm text-white outline-none transition focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20"
               @change="handleVariationSelectChange"
             >
               <option
@@ -165,19 +165,19 @@
           </div>
         </div>
 
-        <dl class="mt-6 grid gap-3 rounded-xl border border-slate-800 bg-slate-950/60 p-4 text-sm">
+        <dl class="mt-6 grid gap-3 rounded-sm border border-neutral-800 bg-neutral-950/60 p-4 text-sm">
           <div class="flex items-center justify-between gap-4">
-            <dt class="text-slate-400">Precio</dt>
-            <dd class="text-xl font-bold text-sky-400">
+            <dt class="text-neutral-400">Precio</dt>
+            <dd class="text-xl font-bold text-amber-400">
               {{ formattedPrice }}
             </dd>
           </div>
           <div class="flex items-center justify-between gap-4">
-            <dt class="text-slate-400">SKU técnico</dt>
-            <dd class="font-mono text-slate-200">{{ activeSku }}</dd>
+            <dt class="text-neutral-400">SKU técnico</dt>
+            <dd class="font-mono text-neutral-200">{{ activeSku }}</dd>
           </div>
           <div class="flex items-center justify-between gap-4">
-            <dt class="text-slate-400">Inventario</dt>
+            <dt class="text-neutral-400">Inventario</dt>
             <dd>
               <span
                 class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold"
@@ -197,7 +197,7 @@
           <button
             v-if="canAddToCart"
             type="button"
-            class="w-full rounded-xl bg-sky-700 px-5 py-3 text-sm font-semibold text-white transition hover:bg-sky-600 focus:outline-none focus:ring-2 focus:ring-sky-500/40"
+            class="w-full rounded-sm border border-amber-400 bg-amber-400 px-5 py-3 text-sm font-bold uppercase tracking-wider text-neutral-950 transition hover:bg-transparent hover:text-amber-300 focus:outline-none focus:ring-2 focus:ring-amber-400/40"
             @click="handleAddToCart"
           >
             Añadir al carrito
@@ -206,7 +206,7 @@
             v-else
             type="button"
             disabled
-            class="w-full cursor-not-allowed rounded-xl border border-slate-700 bg-slate-800 px-5 py-3 text-sm font-semibold text-slate-500"
+            class="w-full cursor-not-allowed rounded-sm border border-neutral-700 bg-neutral-800 px-5 py-3 text-sm font-semibold text-neutral-500"
           >
             Agotado
           </button>
@@ -221,7 +221,7 @@
 
           <p
             v-else-if="!canAddToCart && isInStock"
-            class="mt-3 text-center text-xs text-slate-500"
+            class="mt-3 text-center text-xs text-neutral-500"
           >
             Precio bajo cotización. Contacte a ventas corporativas.
           </p>
@@ -232,7 +232,7 @@
     <!-- Technical Tabs -->
     <section class="mt-10" aria-label="Datos técnicos avanzados">
       <div
-        class="flex flex-wrap gap-1 rounded-xl border border-slate-800 bg-slate-900 p-1"
+        class="flex flex-wrap gap-1 rounded-sm border border-neutral-800 bg-neutral-900 p-1"
         role="tablist"
         aria-label="Secciones de ficha técnica"
       >
@@ -249,21 +249,21 @@
         </button>
       </div>
 
-      <div class="mt-4 rounded-2xl border border-slate-800 bg-slate-900 p-6 md:p-8">
+      <div class="mt-4 rounded-sm border border-neutral-800 bg-neutral-900 p-6 md:p-8">
         <!-- Description -->
         <div v-if="activeTab === 'description'" role="tabpanel">
           <h2 class="mb-4 text-lg font-semibold text-white">Descripción comercial</h2>
           <div
             v-if="hasDescription"
-            class="prose prose-invert max-w-none text-sm leading-relaxed text-slate-300 prose-headings:text-white prose-a:text-sky-400"
+            class="prose prose-invert max-w-none text-sm leading-relaxed text-neutral-300 prose-headings:text-white prose-a:text-amber-400"
             v-html="product.description"
           />
           <div
             v-else-if="hasShortDescription"
-            class="prose prose-invert max-w-none text-sm leading-relaxed text-slate-300"
+            class="prose prose-invert max-w-none text-sm leading-relaxed text-neutral-300"
             v-html="product.shortDescription"
           />
-          <p v-else class="text-sm text-slate-500">
+          <p v-else class="text-sm text-neutral-500">
             No hay descripción comercial disponible para esta refacción.
           </p>
         </div>
@@ -273,34 +273,34 @@
           <h2 class="mb-4 text-lg font-semibold text-white">Especificaciones técnicas</h2>
           <div
             v-if="specificationRows.length"
-            class="overflow-x-auto rounded-xl border border-slate-800"
+            class="overflow-x-auto rounded-sm border border-neutral-800"
           >
-            <table class="min-w-full divide-y divide-slate-800 text-sm">
-              <thead class="bg-slate-950/80">
+            <table class="min-w-full divide-y divide-neutral-800 text-sm">
+              <thead class="bg-neutral-950/80">
                 <tr>
                   <th
                     scope="col"
-                    class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-400"
+                    class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-neutral-400"
                   >
                     Atributo
                   </th>
                   <th
                     scope="col"
-                    class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-400"
+                    class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-neutral-400"
                   >
                     Valor
                   </th>
                 </tr>
               </thead>
-              <tbody class="divide-y divide-slate-800 bg-slate-900/50">
+              <tbody class="divide-y divide-neutral-800 bg-neutral-900/50">
                 <tr v-for="row in specificationRows" :key="row.key">
-                  <td class="px-4 py-3 font-medium text-slate-300">{{ row.label }}</td>
-                  <td class="px-4 py-3 font-mono text-slate-200">{{ row.value }}</td>
+                  <td class="px-4 py-3 font-medium text-neutral-300">{{ row.label }}</td>
+                  <td class="px-4 py-3 font-mono text-neutral-200">{{ row.value }}</td>
                 </tr>
               </tbody>
             </table>
           </div>
-          <p v-else class="text-sm text-slate-500">
+          <p v-else class="text-sm text-neutral-500">
             No hay especificaciones técnicas registradas para esta variante.
           </p>
         </div>
@@ -312,20 +312,20 @@
             <li
               v-for="resource in downloadResources"
               :key="resource.key"
-              class="flex items-center justify-between gap-4 rounded-xl border border-slate-800 bg-slate-950/50 px-4 py-3"
+              class="flex items-center justify-between gap-4 rounded-sm border border-neutral-800 bg-neutral-950/50 px-4 py-3"
             >
-              <span class="text-sm font-medium text-slate-200">{{ resource.label }}</span>
+              <span class="text-sm font-medium text-neutral-200">{{ resource.label }}</span>
               <a
                 :href="resource.url"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="inline-flex items-center rounded-lg border border-sky-700 bg-sky-900/40 px-3 py-1.5 text-xs font-semibold text-sky-300 transition hover:bg-sky-800/60"
+                class="inline-flex items-center rounded-lg border border-amber-400 bg-amber-400/10 px-3 py-1.5 text-xs font-semibold text-amber-300 transition hover:bg-amber-400/20"
               >
                 Descargar
               </a>
             </li>
           </ul>
-          <p v-else class="text-sm text-slate-500">
+          <p v-else class="text-sm text-neutral-500">
             No hay archivos técnicos disponibles para descarga en este momento.
           </p>
         </div>
@@ -656,10 +656,10 @@ const downloadResources = computed<DownloadResource[]>(() => {
 
 const tabButtonClass = (tabId: ProductDetailTab): string => {
   const base =
-    'rounded-lg px-4 py-2.5 text-sm font-semibold transition focus:outline-none focus:ring-2 focus:ring-sky-500/30';
+    'rounded-sm px-4 py-2.5 text-sm font-bold uppercase tracking-wider transition focus:outline-none focus:ring-2 focus:ring-amber-400/30';
   return activeTab.value === tabId
-    ? `${base} bg-sky-700 text-white`
-    : `${base} text-slate-400 hover:bg-slate-800 hover:text-slate-200`;
+    ? `${base} border border-amber-400 bg-amber-400 text-neutral-950`
+    : `${base} border border-transparent text-neutral-400 hover:bg-neutral-800 hover:text-neutral-200`;
 };
 
 const getAttributeOptions = (attribute: ProductAttribute): string[] => {

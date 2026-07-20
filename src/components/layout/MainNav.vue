@@ -1,9 +1,9 @@
 <template>
-  <header class="sticky top-0 z-50 border-b border-slate-800 bg-[#1e1e24] text-white shadow-lg shadow-black/20">
+  <header class="sticky top-0 z-50 border-b border-neutral-800 bg-neutral-950 text-white shadow-lg shadow-black/20">
     <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 md:px-6">
       <RouterLink
         to="/"
-        class="shrink-0 text-base font-bold tracking-wide text-white transition hover:text-sky-300 md:text-lg"
+        class="shrink-0 text-base font-bold tracking-wide text-white transition hover:text-amber-400 md:text-lg"
         @click="closeAllMenus"
       >
         Elevadores Configurator
@@ -13,7 +13,7 @@
         <CartPanel />
         <button
           type="button"
-          class="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-slate-600 bg-slate-800 text-slate-200 transition hover:border-slate-500 hover:bg-slate-700"
+          class="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-neutral-600 bg-neutral-800 text-neutral-200 transition hover:border-neutral-500 hover:bg-neutral-700"
           :aria-expanded="isMobileMenuOpen"
           aria-controls="main-mobile-nav"
           aria-label="Abrir menú de navegación"
@@ -48,7 +48,7 @@
 
       <nav class="hidden items-center gap-1 lg:flex" aria-label="Navegación principal">
         <template v-if="isLoading">
-          <span class="px-2 text-sm text-slate-500">Cargando menú…</span>
+          <span class="px-2 text-sm text-neutral-500">Cargando menú…</span>
         </template>
 
         <template v-else>
@@ -95,7 +95,7 @@
                 <div
                   v-if="openDesktopId === item.id"
                   :id="`desktop-dropdown-${item.id}`"
-                  class="absolute left-0 top-full z-[60] mt-1 min-w-[14rem] rounded-lg border border-slate-700 bg-[#25252d] py-1.5 shadow-xl shadow-black/40"
+                  class="absolute left-0 top-full z-[60] mt-1 min-w-[14rem] rounded-lg border border-neutral-700 bg-neutral-900 py-1.5 shadow-xl shadow-black/40"
                   role="menu"
                   @mouseenter="openDesktopDropdown(item.id)"
                   @mouseleave="scheduleCloseDesktopDropdown(item.id)"
@@ -115,7 +115,7 @@
                               : undefined,
                           }
                     "
-                    class="block px-3.5 py-2 text-sm text-slate-300 transition hover:bg-slate-800/80 hover:text-white"
+                    class="block px-3.5 py-2 text-sm text-neutral-300 transition hover:bg-neutral-800/80 hover:text-white"
                     role="menuitem"
                   >
                     {{ child.label }}
@@ -143,7 +143,7 @@
           </template>
         </template>
 
-        <div class="ml-3 flex items-center gap-2 border-l border-slate-700 pl-4">
+        <div class="ml-3 flex items-center gap-2 border-l border-neutral-700 pl-4">
           <CartPanel />
 
           <template v-if="!authStore.token">
@@ -168,11 +168,11 @@
     <nav
       v-if="isMobileMenuOpen"
       id="main-mobile-nav"
-      class="border-t border-slate-800 bg-[#1a1a20] px-4 py-4 lg:hidden"
+      class="border-t border-neutral-800 bg-neutral-950 px-4 py-4 lg:hidden"
       aria-label="Navegación móvil"
     >
       <div class="mx-auto flex max-w-7xl flex-col gap-1">
-        <p v-if="isLoading" class="px-3 py-2 text-sm text-slate-500">Cargando menú…</p>
+        <p v-if="isLoading" class="px-3 py-2 text-sm text-neutral-500">Cargando menú…</p>
 
         <template v-else>
           <template v-for="item in menuItems" :key="`mobile-${item.id}`">
@@ -210,7 +210,7 @@
               >
                 <div
                   v-if="openMobileAccordionId === item.id"
-                  class="mb-1 ml-2 space-y-0.5 border-l border-slate-700 pl-2"
+                  class="mb-1 ml-2 space-y-0.5 border-l border-neutral-700 pl-2"
                 >
                   <component
                     :is="child.internalTo ? RouterLink : 'a'"
@@ -256,7 +256,7 @@
           </template>
         </template>
 
-        <div class="mt-3 space-y-0.5 border-t border-slate-800 pt-3">
+        <div class="mt-3 space-y-0.5 border-t border-neutral-800 pt-3">
           <template v-if="!authStore.token">
             <RouterLink to="/register" class="mobile-nav-link" @click="closeAllMenus">
               Registrarse
@@ -379,9 +379,11 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .nav-link {
-  font-size: 0.9rem;
-  font-weight: 500;
-  color: #a0a0a5;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #a3a3a3;
   text-decoration: none;
   transition: color 0.2s ease;
 }
@@ -393,11 +395,13 @@ onBeforeUnmount(() => {
 
 .mobile-nav-link {
   display: block;
-  border-radius: 0.5rem;
+  border-radius: 0.125rem;
   padding: 0.65rem 0.75rem;
-  font-size: 0.95rem;
-  font-weight: 500;
-  color: #d1d5db;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #d4d4d4;
   text-decoration: none;
   transition:
     background-color 0.15s ease,
@@ -406,17 +410,19 @@ onBeforeUnmount(() => {
 
 .mobile-nav-link:hover,
 .mobile-nav-link.router-link-active {
-  background-color: #2a2a32;
+  background-color: #262626;
   color: #ffffff;
 }
 
 .btn-primary,
 .btn-secondary,
 .btn-ghost {
-  border-radius: 0.5rem;
+  border-radius: 0.125rem;
   padding: 0.45rem 0.85rem;
-  font-size: 0.85rem;
-  font-weight: 600;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   text-decoration: none;
   transition:
     background-color 0.15s ease,
@@ -425,36 +431,36 @@ onBeforeUnmount(() => {
 }
 
 .btn-primary {
-  border: 1px solid #4a4a55;
-  background: #2a2a32;
-  color: #ffffff;
+  border: 1px solid #fbbf24;
+  background: #fbbf24;
+  color: #0a0a0a;
 }
 
 .btn-primary:hover {
-  background: #35353f;
-  border-color: #5a5a66;
+  background: transparent;
+  color: #fcd34d;
 }
 
 .btn-secondary {
-  border: 1px solid #4a4a55;
-  background: #2a2a32;
-  color: #e5e7eb;
+  border: 1px solid #404040;
+  background: #171717;
+  color: #e5e5e5;
 }
 
 .btn-secondary:hover {
-  background: #35353f;
+  border-color: #fbbf24;
   color: #ffffff;
 }
 
 .btn-ghost {
   border: 1px solid transparent;
   background: transparent;
-  color: #a0a0a5;
+  color: #a3a3a3;
   cursor: pointer;
 }
 
 .btn-ghost:hover {
   color: #ffffff;
-  background: #2a2a32;
+  background: #262626;
 }
 </style>

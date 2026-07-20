@@ -1,5 +1,6 @@
 <template>
   <div class="catalog-container">
+    <p class="catalog-overline">Catálogo industrial</p>
     <h1 class="title">Refacciones de Elevadores</h1>
 
     <div v-if="loading" class="loading-state">
@@ -487,17 +488,38 @@ onMounted(async () => {
 
 <style scoped>
 .catalog-container {
-  max-width: 1100px;
+  max-width: 80rem;
   margin: 0 auto;
-  padding: 2rem;
-  font-family: sans-serif;
-  color: #333;
+  padding: 2rem 1rem 3rem;
+  color: #fafafa;
+  background: #0a0a0a;
+}
+
+@media (min-width: 768px) {
+  .catalog-container {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
 }
 
 .title {
-  border-bottom: 2px solid #0073aa;
-  padding-bottom: 0.5rem;
-  margin-bottom: 1.5rem;
+  margin: 0 0 1.75rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #262626;
+  font-size: clamp(1.75rem, 4vw, 2.75rem);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  color: #ffffff;
+}
+
+.catalog-overline {
+  margin: 0 0 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #fbbf24;
 }
 
 .filters-bar {
@@ -506,9 +528,9 @@ onMounted(async () => {
   gap: 1rem;
   margin-bottom: 1rem;
   padding: 1.25rem;
-  background: #f8f9fb;
-  border: 1px solid #e4e7ec;
-  border-radius: 8px;
+  background: #171717;
+  border: 1px solid #262626;
+  border-radius: 0.125rem;
 }
 
 .search-wrapper,
@@ -519,86 +541,98 @@ onMounted(async () => {
 }
 
 .filter-label {
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: #4b5563;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #fbbf24;
   text-transform: uppercase;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.16em;
 }
 
 .search-input,
 .filter-select {
   width: 100%;
   padding: 0.65rem 0.75rem;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
-  background: #fff;
+  border: 1px solid #404040;
+  border-radius: 0.125rem;
+  background: #0a0a0a;
   font-size: 0.95rem;
-  color: #111827;
+  color: #fafafa;
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 .search-input:focus,
 .filter-select:focus {
   outline: none;
-  border-color: #0073aa;
-  box-shadow: 0 0 0 3px rgba(0, 115, 170, 0.15);
+  border-color: #fbbf24;
+  box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.18);
 }
 
 .results-summary {
   margin: 0 0 1.25rem;
   font-size: 0.9rem;
-  color: #6b7280;
+  color: #a3a3a3;
 }
 
 .empty-state {
   padding: 2.5rem;
   text-align: center;
-  background: #fafafa;
-  border: 1px dashed #d1d5db;
-  border-radius: 8px;
+  background: #171717;
+  border: 1px dashed #404040;
+  border-radius: 0.125rem;
 }
 
 .empty-state p {
   margin: 0 0 1rem;
-  color: #4b5563;
+  color: #a3a3a3;
 }
 
 .clear-filters-btn {
-  padding: 0.5rem 1rem;
-  border: 1px solid #0073aa;
-  border-radius: 6px;
-  background: #fff;
-  color: #0073aa;
-  font-weight: 600;
+  padding: 0.55rem 1rem;
+  border: 1px solid #fbbf24;
+  border-radius: 0.125rem;
+  background: transparent;
+  color: #fbbf24;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   cursor: pointer;
-  transition: background-color 0.15s ease;
+  transition: background-color 0.15s ease, color 0.15s ease;
 }
 
 .clear-filters-btn:hover {
-  background: #f0f8fc;
+  background: #fbbf24;
+  color: #0a0a0a;
 }
 
 .products-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.25rem;
 }
 
 .product-card {
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
+  border: 1px solid #262626;
+  border-radius: 0.125rem;
   overflow: hidden;
-  background: #fff;
+  background: #171717;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition:
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.product-card:hover {
+  border-color: rgba(251, 191, 36, 0.6);
+  transform: translateY(-2px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
 }
 
 .img-wrapper {
   width: 100%;
   height: 220px;
-  background: #f9f9f9;
+  background: #262626;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -611,12 +645,12 @@ onMounted(async () => {
 }
 
 .no-img {
-  color: #888;
+  color: #737373;
   font-style: italic;
 }
 
 .product-info {
-  padding: 1.5rem;
+  padding: 1.25rem;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
@@ -625,17 +659,18 @@ onMounted(async () => {
 
 h3 {
   margin: 0 0 0.75rem;
-  font-size: 1.3rem;
-  color: #111;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #ffffff;
 }
 
 .meta-label {
   margin: 0 0 0.25rem;
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: #6b7280;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #a3a3a3;
   text-transform: uppercase;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.08em;
 }
 
 .short-desc-section {
@@ -652,20 +687,20 @@ h3 {
 .sku-tag {
   margin: 0;
   font-size: 0.85rem;
-  color: #374151;
+  color: #d4d4d4;
   font-family: ui-monospace, monospace;
 }
 
 .sku-tag .meta-label {
   display: inline;
   margin-right: 0.35rem;
-  font-family: sans-serif;
+  font-family: system-ui, sans-serif;
 }
 
 .short-desc {
   font-size: 0.95rem;
-  color: #666;
-  line-height: 1.4;
+  color: #a3a3a3;
+  line-height: 1.5;
   margin: 0;
 }
 
@@ -675,40 +710,44 @@ h3 {
 }
 
 .variations-section {
-  background: #f5f5f5;
+  background: #0a0a0a;
   padding: 1rem;
-  border-radius: 6px;
+  border: 1px solid #262626;
+  border-radius: 0.125rem;
   margin-top: auto;
 }
 
 .variations-section label {
   display: block;
-  font-size: 0.85rem;
-  font-weight: bold;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   margin-bottom: 0.3rem;
-  color: #555;
+  color: #a3a3a3;
 }
 
 .variations-section select {
   width: 100%;
   padding: 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  background: #fff;
+  border: 1px solid #404040;
+  border-radius: 0.125rem;
+  background: #171717;
+  color: #fafafa;
   font-size: 0.9rem;
   margin-bottom: 0.8rem;
 }
 
 .price-display {
   margin: 0;
-  font-size: 1rem;
-  font-weight: bold;
-  color: #222;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #d4d4d4;
 }
 
 .price-display span {
-  color: #0073aa;
-  font-size: 1.25rem;
+  color: #fbbf24;
+  font-size: 1.2rem;
 }
 
 .card-actions {
@@ -722,45 +761,50 @@ h3 {
   display: block;
   width: 100%;
   padding: 0.7rem 1rem;
-  border: 1px solid #0073aa;
-  border-radius: 6px;
-  background: #fff;
-  color: #0073aa;
-  font-size: 0.95rem;
-  font-weight: 600;
+  border: 1px solid #404040;
+  border-radius: 0.125rem;
+  background: transparent;
+  color: #e5e5e5;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   text-align: center;
   text-decoration: none;
   cursor: pointer;
-  transition: background-color 0.15s ease, color 0.15s ease;
+  transition: border-color 0.15s ease, color 0.15s ease;
 }
 
 .view-detail-btn:hover {
-  background: #f0f8fc;
-  color: #005f8d;
+  border-color: #fbbf24;
+  color: #fbbf24;
 }
 
 .add-to-cart-btn {
   width: 100%;
   padding: 0.7rem 1rem;
-  border: none;
-  border-radius: 6px;
-  background: #0073aa;
-  color: #ffffff;
-  font-size: 0.95rem;
-  font-weight: 600;
+  border: 1px solid #fbbf24;
+  border-radius: 0.125rem;
+  background: #fbbf24;
+  color: #0a0a0a;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   cursor: pointer;
-  transition: background-color 0.15s ease;
+  transition: background-color 0.15s ease, color 0.15s ease;
 }
 
 .add-to-cart-btn:hover {
-  background: #005f8d;
+  background: transparent;
+  color: #fcd34d;
 }
 
 .added-feedback {
   margin: 0.5rem 0 0;
   font-size: 0.82rem;
   font-weight: 600;
-  color: #047857;
+  color: #6ee7b7;
   text-align: center;
 }
 
@@ -768,14 +812,15 @@ h3 {
 .error-state {
   padding: 3rem;
   text-align: center;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
+  color: #a3a3a3;
 }
 
 .error-state {
-  color: #d9534f;
-  background: #fdf7f7;
-  border: 1px solid #d9534f;
-  border-radius: 4px;
+  color: #fca5a5;
+  background: rgba(69, 10, 10, 0.35);
+  border: 1px solid rgba(127, 29, 29, 0.6);
+  border-radius: 0.125rem;
 }
 
 @media (max-width: 900px) {

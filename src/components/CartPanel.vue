@@ -108,17 +108,17 @@ const handleCheckout = (): void => {
   justify-content: center;
   width: 2.5rem;
   height: 2.5rem;
-  border: 1px solid #3a3a42;
-  border-radius: 8px;
-  background: #2a2a32;
+  border: 1px solid #404040;
+  border-radius: 0.125rem;
+  background: #171717;
   color: #ffffff;
   cursor: pointer;
   transition: background-color 0.15s ease, border-color 0.15s ease;
 }
 
 .cart-toggle:hover {
-  background: #35353f;
-  border-color: #4a4a55;
+  background: #262626;
+  border-color: #fbbf24;
 }
 
 .cart-icon {
@@ -134,8 +134,8 @@ const handleCheckout = (): void => {
   height: 1.15rem;
   padding: 0 0.25rem;
   border-radius: 999px;
-  background: #0073aa;
-  color: #ffffff;
+  background: #fbbf24;
+  color: #0a0a0a;
   font-size: 0.65rem;
   font-weight: 700;
   line-height: 1.15rem;
@@ -145,7 +145,7 @@ const handleCheckout = (): void => {
 .cart-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.35);
+  background: rgba(0, 0, 0, 0.55);
   z-index: 90;
 }
 
@@ -157,9 +157,11 @@ const handleCheckout = (): void => {
   flex-direction: column;
   width: min(100%, 24rem);
   height: 100vh;
-  background: #ffffff;
-  box-shadow: -4px 0 24px rgba(0, 0, 0, 0.12);
+  background: #0a0a0a;
+  border-left: 1px solid #262626;
+  box-shadow: -8px 0 32px rgba(0, 0, 0, 0.45);
   z-index: 100;
+  color: #fafafa;
 }
 
 .cart-panel-header {
@@ -167,27 +169,34 @@ const handleCheckout = (): void => {
   align-items: center;
   justify-content: space-between;
   padding: 1rem 1.25rem;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid #262626;
 }
 
 .cart-panel-header h2 {
   margin: 0;
-  font-size: 1.05rem;
-  color: #111827;
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #ffffff;
 }
 
 .close-btn {
   border: none;
   background: transparent;
-  color: #6b7280;
+  color: #a3a3a3;
   font-size: 1.5rem;
   line-height: 1;
   cursor: pointer;
 }
 
+.close-btn:hover {
+  color: #fbbf24;
+}
+
 .cart-empty {
   padding: 2rem 1.25rem;
-  color: #6b7280;
+  color: #a3a3a3;
   text-align: center;
 }
 
@@ -205,15 +214,16 @@ const handleCheckout = (): void => {
   gap: 0.75rem;
   align-items: start;
   padding: 0.75rem 1.25rem;
-  border-bottom: 1px solid #f3f4f6;
+  border-bottom: 1px solid #262626;
 }
 
 .item-thumb {
   width: 4rem;
   height: 4rem;
-  border-radius: 6px;
+  border-radius: 0.125rem;
   overflow: hidden;
-  background: #f9fafb;
+  background: #171717;
+  border: 1px solid #262626;
 }
 
 .item-img {
@@ -229,7 +239,7 @@ const handleCheckout = (): void => {
   width: 100%;
   height: 100%;
   font-size: 0.65rem;
-  color: #9ca3af;
+  color: #737373;
   text-align: center;
 }
 
@@ -240,8 +250,8 @@ const handleCheckout = (): void => {
 .item-name {
   margin: 0 0 0.25rem;
   font-size: 0.9rem;
-  font-weight: 600;
-  color: #111827;
+  font-weight: 700;
+  color: #ffffff;
 }
 
 .item-variant,
@@ -249,47 +259,50 @@ const handleCheckout = (): void => {
 .item-meta {
   margin: 0;
   font-size: 0.78rem;
-  color: #6b7280;
+  color: #a3a3a3;
 }
 
 .remove-btn {
   border: none;
   background: transparent;
-  color: #9ca3af;
+  color: #737373;
   font-size: 1.25rem;
   line-height: 1;
   cursor: pointer;
 }
 
 .remove-btn:hover {
-  color: #d9534f;
+  color: #f87171;
 }
 
 .cart-panel-footer {
   padding: 1rem 1.25rem 1.25rem;
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid #262626;
 }
 
 .cart-summary {
   margin: 0 0 0.75rem;
   font-size: 0.85rem;
-  color: #4b5563;
+  color: #a3a3a3;
 }
 
 .checkout-btn {
   width: 100%;
   padding: 0.75rem 1rem;
-  border: none;
-  border-radius: 8px;
-  background: #0073aa;
-  color: #ffffff;
-  font-size: 0.95rem;
-  font-weight: 600;
+  border: 1px solid #fbbf24;
+  border-radius: 0.125rem;
+  background: #fbbf24;
+  color: #0a0a0a;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   cursor: pointer;
-  transition: background-color 0.15s ease;
+  transition: background-color 0.15s ease, color 0.15s ease;
 }
 
 .checkout-btn:hover {
-  background: #005f8d;
+  background: transparent;
+  color: #fcd34d;
 }
 </style>

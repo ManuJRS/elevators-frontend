@@ -1,14 +1,14 @@
 <template>
   <section class="panel-card space-y-6" aria-labelledby="orders-heading">
     <header>
-      <p class="text-xs font-semibold uppercase tracking-[0.2em] text-sky-400">Pedidos</p>
+      <p class="text-xs font-semibold uppercase tracking-[0.2em] text-amber-400">Pedidos</p>
       <h2 id="orders-heading" class="mt-2 text-2xl font-bold text-white">Mis pedidos</h2>
-      <p class="mt-2 text-sm text-slate-400">
+      <p class="mt-2 text-sm text-neutral-400">
         Historial de compras sincronizado con WooCommerce en tiempo real.
       </p>
     </header>
 
-    <p v-if="isLoading" class="text-sm font-medium text-sky-300">Cargando pedidos...</p>
+    <p v-if="isLoading" class="text-sm font-medium text-amber-300">Cargando pedidos...</p>
 
     <p
       v-if="errorMessage"
@@ -18,10 +18,10 @@
       {{ errorMessage }}
     </p>
 
-    <div class="overflow-hidden rounded-xl border border-slate-700">
+    <div class="overflow-hidden rounded-sm border border-neutral-700">
       <div class="overflow-x-auto">
         <table class="min-w-full text-left text-sm">
-          <thead class="bg-slate-800/80 text-xs uppercase tracking-wide text-slate-400">
+          <thead class="bg-neutral-800/80 text-xs uppercase tracking-wide text-neutral-400">
             <tr>
               <th class="px-4 py-3 font-semibold" scope="col">ID Pedido</th>
               <th class="px-4 py-3 font-semibold" scope="col">Fecha</th>
@@ -30,20 +30,20 @@
               <th class="px-4 py-3 font-semibold text-right" scope="col">Acción</th>
             </tr>
           </thead>
-          <tbody v-if="orders.length > 0" class="divide-y divide-slate-800">
+          <tbody v-if="orders.length > 0" class="divide-y divide-neutral-800">
             <tr
               v-for="order in orders"
               :key="order.databaseId"
-              class="bg-slate-900/40 transition hover:bg-slate-800/50"
+              class="bg-neutral-900/40 transition hover:bg-neutral-800/50"
             >
-              <td class="px-4 py-3 font-semibold text-slate-100">#{{ order.databaseId }}</td>
-              <td class="px-4 py-3 text-slate-300">{{ formatOrderDate(order.date) }}</td>
+              <td class="px-4 py-3 font-semibold text-neutral-100">#{{ order.databaseId }}</td>
+              <td class="px-4 py-3 text-neutral-300">{{ formatOrderDate(order.date) }}</td>
               <td class="px-4 py-3">
                 <span class="status-pill" :class="getStatusClass(order.status)">
                   {{ formatOrderStatus(order.status) }}
                 </span>
               </td>
-              <td class="px-4 py-3 font-medium text-slate-100">
+              <td class="px-4 py-3 font-medium text-neutral-100">
                 {{ order.total || '—' }}
               </td>
               <td class="px-4 py-3 text-right">
@@ -62,7 +62,7 @@
               <td colspan="5" class="px-4 py-14 text-center">
                 <div class="mx-auto flex max-w-sm flex-col items-center gap-3">
                   <span
-                    class="flex h-12 w-12 items-center justify-center rounded-full bg-slate-800 text-slate-400"
+                    class="flex h-12 w-12 items-center justify-center rounded-full bg-neutral-800 text-neutral-400"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -80,13 +80,13 @@
                       />
                     </svg>
                   </span>
-                  <p class="text-base font-semibold text-slate-200">Aún no tienes pedidos registrados</p>
-                  <p class="text-sm text-slate-500">
+                  <p class="text-base font-semibold text-neutral-200">Aún no tienes pedidos registrados</p>
+                  <p class="text-sm text-neutral-500">
                     Cuando completes una compra en la plataforma, aparecerá aquí con su estado y total.
                   </p>
                   <RouterLink
                     to="/catalogo"
-                    class="mt-2 rounded-lg bg-sky-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-sky-500"
+                    class="mt-2 rounded-lg bg-amber-400 px-4 py-2 text-sm font-semibold text-white transition hover:bg-amber-400"
                   >
                     Explorar catálogo
                   </RouterLink>
@@ -114,7 +114,7 @@
       >
         <header class="modal-header">
           <div>
-            <p class="text-xs font-semibold uppercase tracking-[0.2em] text-sky-400">Pedido</p>
+            <p class="text-xs font-semibold uppercase tracking-[0.2em] text-amber-400">Pedido</p>
             <h3
               :id="`order-modal-title-${selectedOrder.databaseId}`"
               class="mt-1 text-xl font-bold text-white"
@@ -149,36 +149,36 @@
           </div>
         </div>
 
-        <div class="overflow-hidden rounded-xl border border-slate-700">
+        <div class="overflow-hidden rounded-sm border border-neutral-700">
           <table class="min-w-full text-left text-sm">
-            <thead class="bg-slate-800/80 text-xs uppercase tracking-wide text-slate-400">
+            <thead class="bg-neutral-800/80 text-xs uppercase tracking-wide text-neutral-400">
               <tr>
                 <th class="px-4 py-3 font-semibold" scope="col">Producto</th>
                 <th class="px-4 py-3 font-semibold text-center" scope="col">Cantidad</th>
                 <th class="px-4 py-3 font-semibold text-right" scope="col">Total</th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-slate-800">
+            <tbody class="divide-y divide-neutral-800">
               <tr
                 v-for="lineItem in selectedOrder.lineItems?.nodes ?? []"
                 :key="lineItem.databaseId"
-                class="bg-slate-900/40"
+                class="bg-neutral-900/40"
               >
                 <td class="px-4 py-3">
-                  <p class="font-medium text-slate-100">{{ getLineItemName(lineItem) }}</p>
-                  <p v-if="getLineItemSku(lineItem)" class="mt-0.5 text-xs text-slate-500">
+                  <p class="font-medium text-neutral-100">{{ getLineItemName(lineItem) }}</p>
+                  <p v-if="getLineItemSku(lineItem)" class="mt-0.5 text-xs text-neutral-500">
                     SKU: {{ getLineItemSku(lineItem) }}
                   </p>
                 </td>
-                <td class="px-4 py-3 text-center text-slate-300">
+                <td class="px-4 py-3 text-center text-neutral-300">
                   {{ lineItem.quantity ?? '—' }}
                 </td>
-                <td class="px-4 py-3 text-right font-medium text-slate-100">
+                <td class="px-4 py-3 text-right font-medium text-neutral-100">
                   {{ lineItem.total || '—' }}
                 </td>
               </tr>
               <tr v-if="(selectedOrder.lineItems?.nodes?.length ?? 0) === 0">
-                <td colspan="3" class="px-4 py-6 text-center text-sm text-slate-500">
+                <td colspan="3" class="px-4 py-6 text-center text-sm text-neutral-500">
                   Este pedido no tiene artículos registrados.
                 </td>
               </tr>
@@ -187,7 +187,7 @@
         </div>
 
         <footer class="modal-footer">
-          <span class="text-sm font-semibold uppercase tracking-wide text-slate-400">Total general</span>
+          <span class="text-sm font-semibold uppercase tracking-wide text-neutral-400">Total general</span>
           <span class="text-2xl font-bold text-white">{{ selectedOrder.total || '—' }}</span>
         </footer>
       </div>
@@ -352,9 +352,9 @@ onMounted(() => {
 
 <style scoped>
 .panel-card {
-  border-radius: 1rem;
-  border: 1px solid #334155;
-  background-color: #0f172a;
+  border-radius: 0.125rem;
+  border: 1px solid #262626;
+  background-color: #171717;
   padding: 1.5rem;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.45);
 }
@@ -385,7 +385,7 @@ onMounted(() => {
 .status-pill--processing {
   border: 1px solid rgba(56, 189, 248, 0.35);
   background-color: rgba(12, 74, 110, 0.35);
-  color: #7dd3fc;
+  color: #fbbf24;
 }
 
 .status-pill--cancelled {
@@ -397,13 +397,13 @@ onMounted(() => {
 .status-pill--default {
   border: 1px solid rgba(148, 163, 184, 0.35);
   background-color: rgba(51, 65, 85, 0.35);
-  color: #cbd5e1;
+  color: #a3a3a3;
 }
 
 .details-btn {
-  border-radius: 0.5rem;
+  border-radius: 0.125rem;
   border: 1px solid #475569;
-  background-color: #1e293b;
+  background-color: #262626;
   padding: 0.35rem 0.75rem;
   font-size: 0.75rem;
   font-weight: 600;
@@ -412,7 +412,7 @@ onMounted(() => {
 }
 
 .details-btn:hover {
-  border-color: #38bdf8;
+  border-color: #fbbf24;
   background-color: #0c4a6e;
 }
 
@@ -433,9 +433,9 @@ onMounted(() => {
   max-width: 42rem;
   max-height: calc(100vh - 2rem);
   overflow-y: auto;
-  border-radius: 1rem;
-  border: 1px solid #334155;
-  background-color: #0f172a;
+  border-radius: 0.125rem;
+  border: 1px solid #262626;
+  background-color: #171717;
   padding: 1.5rem;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.65);
 }
@@ -463,9 +463,9 @@ onMounted(() => {
   flex-shrink: 0;
   align-items: center;
   justify-content: center;
-  border-radius: 0.5rem;
+  border-radius: 0.125rem;
   border: 1px solid #475569;
-  background-color: #1e293b;
+  background-color: #262626;
   color: #e2e8f0;
   font-size: 0.875rem;
   font-weight: 700;
@@ -473,7 +473,7 @@ onMounted(() => {
 }
 
 .modal-close-btn:hover {
-  border-color: #38bdf8;
+  border-color: #fbbf24;
   background-color: #0c4a6e;
   color: #ffffff;
 }
@@ -492,9 +492,9 @@ onMounted(() => {
 }
 
 .meta-item {
-  border-radius: 0.75rem;
-  border: 1px solid #334155;
-  background-color: #111827;
+  border-radius: 0.125rem;
+  border: 1px solid #262626;
+  background-color: #0a0a0a;
   padding: 0.75rem 1rem;
 }
 
