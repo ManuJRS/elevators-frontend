@@ -120,24 +120,24 @@
             </h2>
           </div>
 
-          <div class="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-12 lg:items-stretch">
+          <div class="grid grid-cols-1 gap-1 lg:grid-cols-2 lg:items-stretch">
             <div
-              class="overflow-hidden rounded-sm border border-neutral-800 bg-neutral-950"
+              class="relative min-h-[280px] w-full overflow-hidden rounded-sm border border-neutral-800 bg-neutral-950 lg:min-h-0 lg:h-auto"
             >
               <div
                 v-if="contactDetails?.mapsIframe"
-                class="contact-map aspect-video w-full [&_iframe]:h-full [&_iframe]:w-full [&_iframe]:border-0"
+                class="contact-map absolute inset-0 [&_iframe]:h-full [&_iframe]:w-full [&_iframe]:border-0"
                 v-html="contactDetails.mapsIframe"
               ></div>
               <div
                 v-else
-                class="flex aspect-video items-center justify-center bg-neutral-950 text-sm text-neutral-500"
+                class="flex h-full min-h-[280px] items-center justify-center bg-neutral-950 text-sm text-neutral-500 lg:absolute lg:inset-0 lg:min-h-0"
               >
                 Mapa no disponible
               </div>
             </div>
 
-            <div class="flex flex-col justify-center space-y-6 border border-neutral-800 bg-neutral-950 p-6 sm:p-8">
+            <div class="flex h-full flex-col justify-center space-y-6 border border-neutral-800 bg-neutral-950 p-6 sm:p-8">
               <article class="border-b border-neutral-800 pb-6">
                 <p class="text-[10px] font-bold uppercase tracking-[0.25em] text-amber-400">Dirección</p>
                 <p class="mt-2 whitespace-pre-line text-base leading-7 text-neutral-200">
